@@ -1,0 +1,2 @@
+1.remove sbjlevel in PersonSbj.java , XmlTag.java , ShowActivity.java , HtmlParser.java,because it is redundant.
+2.parse personsbj xml
