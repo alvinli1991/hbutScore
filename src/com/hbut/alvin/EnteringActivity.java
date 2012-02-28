@@ -1,6 +1,7 @@
 package com.hbut.alvin;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -122,14 +123,14 @@ public class EnteringActivity extends Activity {
 				String ownGradeDoc = getOwnGradeFileByID(pi.getID());
 				if (ownGradeDoc == null)
 					return;
-				
+
 				// analyse
 				handler.sendMessage(handler.obtainMessage(ANALYSE));
 				psSbjList = HtmlParser.parserPsSbj(ownGradeDoc);
 				if (psSbjList == null)
 					return;
 				myApp.setpSbjList(psSbjList);
-				
+
 				// save
 				String pGradeXml = XmlWriter.writePGradeXml(psSbjList, pi);
 				if (!XmlWriter.hasPath()) {
@@ -141,8 +142,10 @@ public class EnteringActivity extends Activity {
 					Log.v("pxml", pGradeXml);
 					OutputStream outStream;
 					try {
-						outStream = openFileOutput(pi.getID()+".xml", MODE_APPEND);
-						OutputStreamWriter outStreamWriter = new OutputStreamWriter(outStream,"GBK");
+						outStream = openFileOutput(pi.getID() + ".xml",
+								MODE_APPEND);
+						OutputStreamWriter outStreamWriter = new OutputStreamWriter(
+								outStream, "GBK");
 						outStreamWriter.write(pGradeXml);
 						outStreamWriter.close();
 						outStream.close();
@@ -247,4 +250,12 @@ public class EnteringActivity extends Activity {
 		return text;
 	}
 
+	public boolean hasFile(String id) {
+		String path = getApplicationContext().getFilesDir().getAbsolutePath();
+		File file = new File(path + id);
+		if (file.exists())
+			return true;
+		else
+			return false;
+	}
 }
