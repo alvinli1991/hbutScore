@@ -1,6 +1,5 @@
 package com.hbut.util;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -17,17 +16,8 @@ public class XmlWriter {
 		else
 			return false;
 	}
-//	
-//	public static String getCGradePath(){
-//		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-//			File cacheDir = Environment.getExternalStorageDirectory();
-//			String path = cacheDir.getPath()+"/hbutscore"+"/class";
-//			return path;
-//		}
-//		else
-//			return null;
-//	}
 	public static String writePGradeXml(List<PersonSbj> pList, PersonInf pi) {
+
 		StringWriter xmlWriter = new StringWriter();
 		String nmsp = "";
 		try {
@@ -39,49 +29,49 @@ public class XmlWriter {
 			xmlSerializer.setOutput(xmlWriter);
 			// begin write
 			xmlSerializer.startDocument("GBK", true);
-			xmlSerializer.startTag(nmsp, "student");
-			xmlSerializer.attribute(nmsp, "id", pi.getID());
-			xmlSerializer.attribute(nmsp, "name", pi.getName());
-			xmlSerializer.attribute(nmsp, "pwd", pi.getPwd());
-			xmlSerializer.attribute(nmsp, "cls", pi.getCls());
+			xmlSerializer.startTag(nmsp,XmlTag.eStu);
+			xmlSerializer.attribute(nmsp, XmlTag.aStuID, pi.getID());
+			xmlSerializer.attribute(nmsp, XmlTag.aStuName, pi.getName());
+			xmlSerializer.attribute(nmsp, XmlTag.aStuPwd, pi.getPwd());
+			xmlSerializer.attribute(nmsp, XmlTag.aStuCls, pi.getCls());
 
 			for (PersonSbj n : pList) {
 				// <subject>
-				xmlSerializer.startTag(nmsp, "subject");
+				xmlSerializer.startTag(nmsp, XmlTag.eSub);
 				// <id></id>
-				xmlSerializer.startTag(nmsp, "id");
+				xmlSerializer.startTag(nmsp, XmlTag.eSubId);
 				xmlSerializer.text(n.getSbjID());
-				xmlSerializer.endTag(nmsp, "id");
+				xmlSerializer.endTag(nmsp, XmlTag.eSubId);
 				// <name></name>
-				xmlSerializer.startTag(nmsp, "name");
+				xmlSerializer.startTag(nmsp, XmlTag.eSubName);
 				xmlSerializer.text(n.getSbjName());
 				xmlSerializer.endTag(nmsp, "name");
 				// <grade></grade>
-				xmlSerializer.startTag(nmsp, "grade");
-				if (n.getSbjLevel() == null)
+				xmlSerializer.startTag(nmsp, XmlTag.eSubGrade);
+//				if (n.getSbjLevel() == null)
 					xmlSerializer.text(Integer.toString(n.getSbjGrade()));
-				else
-					xmlSerializer.text("");
-				xmlSerializer.endTag(nmsp, "grade");
+//				else
+//					xmlSerializer.text("");
+				xmlSerializer.endTag(nmsp, XmlTag.eSubGrade);
 				// <note></note>
-				xmlSerializer.startTag(nmsp, "note");
+				xmlSerializer.startTag(nmsp, XmlTag.eSubNote);
 				xmlSerializer.text(n.getSbjNote());
-				xmlSerializer.endTag(nmsp, "note");
+				xmlSerializer.endTag(nmsp, XmlTag.eSubNote);
 				// <times></times>
-				xmlSerializer.startTag(nmsp, "times");
+				xmlSerializer.startTag(nmsp, XmlTag.eSubTimes);
 				xmlSerializer.text(Integer.toString(n.getSbjTimes()));
-				xmlSerializer.endTag(nmsp, "times");
+				xmlSerializer.endTag(nmsp, XmlTag.eSubTimes);
 				// <level></level>
-				xmlSerializer.startTag(nmsp, "level");
-				if (n.getSbjLevel() != null)
-					xmlSerializer.text(n.getSbjLevel());
-				else
-					xmlSerializer.text("");
-				xmlSerializer.endTag(nmsp, "level");
+//				xmlSerializer.startTag(nmsp, XmlTag.eSubLevel);
+//				if (n.getSbjLevel() != null)
+//					xmlSerializer.text(n.getSbjLevel());
+//				else
+//					xmlSerializer.text("");
+//				xmlSerializer.endTag(nmsp, XmlTag.eSubLevel);
 				// </subject>
-				xmlSerializer.endTag(nmsp, "subject");
+				xmlSerializer.endTag(nmsp, XmlTag.eSub);
 			}
-			xmlSerializer.endTag(nmsp, "student");
+			xmlSerializer.endTag(nmsp, XmlTag.eStu);
 			xmlSerializer.endDocument();
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -89,4 +79,6 @@ public class XmlWriter {
 		}
 		return xmlWriter.toString();
 	}
+	
+	
 }
