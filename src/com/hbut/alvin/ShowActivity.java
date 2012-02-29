@@ -48,13 +48,13 @@ public class ShowActivity extends ListActivity {
 		infText = (TextView) findViewById(R.id.inf);
 		personBtn = (ImageButton) findViewById(R.id.personBtn);
 		classBtn = (ImageButton) findViewById(R.id.classBtn);
-		showListView = (ListView)findViewById(android.R.id.list);
+		showListView = (ListView) findViewById(android.R.id.list);
 		myapp = (HbutApp) getApplicationContext();
 		gradesContent = myapp.getpSbjList();
 		listData = buildListData();
-		infText.setText(myapp.getPs().getName()+"~"+myapp.getPs().getCls());
-		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow, items,
-				itemsID));
+		infText.setText(myapp.getPs().getName() + "~" + myapp.getPs().getCls());
+		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
+				items, itemsID));
 	}
 
 	private List<Map<String, Object>> buildListData() {
@@ -63,20 +63,20 @@ public class ShowActivity extends ListActivity {
 		for (PersonSbj n : gradesContent) {
 			map = new HashMap<String, Object>();
 			map.put("sbjName", n.getSbjName());
-			map.put("sbjNote", n.getSbjID()+"  "+n.getSbjNote());
-			if (n.getSbjLevel() == null) {
-				map.put("pGrade",Integer.toString(n.getSbjGrade()));
-				if (n.getSbjGrade() >= 90)
-					map.put("grdlevel", R.drawable.head);
-				else
-					map.put("grdlevel", R.drawable.android);
-			} else {
-				map.put("pGrade", n.getSbjLevel());
-				if (n.getSbjLevel().equals("се"))
-					map.put("grdlevel", R.drawable.head);
-				else
-					map.put("grdlevel", R.drawable.android);
-			}
+			map.put("sbjNote", n.getSbjID() + "  " + n.getSbjNote());
+			// if (n.getSbjLevel() == null) {
+			map.put("pGrade", Integer.toString(n.getSbjGrade()));
+			if (n.getSbjGrade() >= 90)
+				map.put("grdlevel", R.drawable.head);
+			else
+				map.put("grdlevel", R.drawable.android);
+			// } else {
+			// map.put("pGrade", n.getSbjLevel());
+			// if (n.getSbjLevel().equals("се"))
+			// map.put("grdlevel", R.drawable.head);
+			// else
+			// map.put("grdlevel", R.drawable.android);
+			// }
 			list.add(map);
 			// map.put("grdlevel", value);
 		}
@@ -84,24 +84,23 @@ public class ShowActivity extends ListActivity {
 		return list;
 	}
 
-
 	class RowAdapter extends SimpleAdapter {
 
-//		int ScreenWidth;
-//		private int getScreenWidth()
-//		{
-//			DisplayMetrics dm = new DisplayMetrics();
-//			getWindowManager().getDefaultDisplay().getMetrics(dm);
-//			return dm.widthPixels;
-//		}
-//		private int getPicWidth(int id){
-//			Bitmap bmp = BitmapFactory.decodeResource(getResources(), id);
-//			return bmp.getWidth();
-//		}
-//		private int getStringWidth(String target){
-//			Paint p = new Paint();
-//			return Math.round(p.measureText(target));
-//		}
+		// int ScreenWidth;
+		// private int getScreenWidth()
+		// {
+		// DisplayMetrics dm = new DisplayMetrics();
+		// getWindowManager().getDefaultDisplay().getMetrics(dm);
+		// return dm.widthPixels;
+		// }
+		// private int getPicWidth(int id){
+		// Bitmap bmp = BitmapFactory.decodeResource(getResources(), id);
+		// return bmp.getWidth();
+		// }
+		// private int getStringWidth(String target){
+		// Paint p = new Paint();
+		// return Math.round(p.measureText(target));
+		// }
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
@@ -110,22 +109,29 @@ public class ShowActivity extends ListActivity {
 				LayoutInflater inflater = getLayoutInflater();
 				row = inflater.inflate(R.layout.prow, parent, false);
 			}
-			
-			PViewHolder holder = (PViewHolder)row.getTag();
-			if(holder == null){
+
+			PViewHolder holder = (PViewHolder) row.getTag();
+			if (holder == null) {
 				holder = new PViewHolder(row);
 				row.setTag(holder);
 			}
-			
-//			int picWidth = getPicWidth((Integer) listData.get(position).get("grdlevel"));
-//			int strWidth1 =  getStringWidth((String)listData.get(position).get("pGrade"));
-//			int strWidth2 = getStringWidth((String)listData.get(position).get("sbjName"));
-			holder.pGrade.setText((String)listData.get(position).get("pGrade"));
-			holder.grdlevel.setImageResource((Integer) listData.get(position).get("grdlevel"));
-			holder.sbjName.setText((String)listData.get(position).get("sbjName"));
-			
-			holder.sbjNote.setText((String)listData.get(position).get("sbjNote"));
-			
+
+			// int picWidth = getPicWidth((Integer)
+			// listData.get(position).get("grdlevel"));
+			// int strWidth1 =
+			// getStringWidth((String)listData.get(position).get("pGrade"));
+			// int strWidth2 =
+			// getStringWidth((String)listData.get(position).get("sbjName"));
+			holder.pGrade
+					.setText((String) listData.get(position).get("pGrade"));
+			holder.grdlevel.setImageResource((Integer) listData.get(position)
+					.get("grdlevel"));
+			holder.sbjName.setText((String) listData.get(position).get(
+					"sbjName"));
+
+			holder.sbjNote.setText((String) listData.get(position).get(
+					"sbjNote"));
+
 			return row;
 		}
 
@@ -135,7 +141,6 @@ public class ShowActivity extends ListActivity {
 			TextView sbjName = null;
 			TextView sbjNote = null;
 
-			
 			public PViewHolder(View base) {
 				this.grdlevel = (ImageView) base.findViewById(R.id.grdlevel);
 				this.pGrade = (TextView) base.findViewById(R.id.pGrade);
@@ -147,7 +152,7 @@ public class ShowActivity extends ListActivity {
 		public RowAdapter(Context context, List<? extends Map<String, ?>> data,
 				int resource, String[] from, int[] to) {
 			super(context, data, resource, from, to);
-//			ScreenWidth = getScreenWidth();
+			// ScreenWidth = getScreenWidth();
 			// TODO Auto-generated constructor stub
 		}
 

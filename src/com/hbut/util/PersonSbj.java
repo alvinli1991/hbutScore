@@ -1,12 +1,12 @@
 package com.hbut.util;
 
 public class PersonSbj {
-	public String getSbjLevel() {
-		return sbjLevel;
-	}
-	public void setSbjLevel(String sbjLevel) {
-		this.sbjLevel = sbjLevel;
-	}
+//	public String getSbjLevel() {
+//		return sbjLevel;
+//	}
+//	public void setSbjLevel(String sbjLevel) {
+//		this.sbjLevel = sbjLevel;
+//	}
 	public String getSbjNote() {
 		return sbjNote;
 	}
@@ -43,6 +43,6 @@ public class PersonSbj {
 	int sbjGrade;
 	String sbjNote;
 	int sbjTimes;
-	String sbjLevel;
+//	String sbjLevel;
 	
 }

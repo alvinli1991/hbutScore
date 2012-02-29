@@ -14,6 +14,6 @@ public class XmlTag {
 	public static final String eSubName = "name";
 	public static final String eSubGrade = "grade";
 	public static final String eSubNote = "note";
-	public static final String eSubLevel = "level";
+//	public static final String eSubLevel = "level";
 	public static final String eSubTimes = "times";
 }

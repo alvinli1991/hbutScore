@@ -21,25 +21,26 @@ public class HtmlParser {
 		}
 
 		pi.setPwd(result[0].split(">")[1].split("<")[0]);
-//		m = Pattern.compile("(\\d)+").matcher(result[0]);
-//		if (m.find())
-//			pi.setPwd(m.group());
-//		else
-//			return null;
+		// m = Pattern.compile("(\\d)+").matcher(result[0]);
+		// if (m.find())
+		// pi.setPwd(m.group());
+		// else
+		// return null;
 
 		pi.setCls(result[1].split(">")[1].split("<")[0]);
-//		m = Pattern.compile("(\\d)+(.)+[^(</TD>)]").matcher(result[1]);
-//		if (m.find())
-//			pi.setCls(m.group());
-//		else
-//			return null;
+		// m = Pattern.compile("(\\d)+(.)+[^(</TD>)]").matcher(result[1]);
+		// if (m.find())
+		// pi.setCls(m.group());
+		// else
+		// return null;
 		pi.setName(result[2].split(">")[1].split("<")[0]);
-//		m = Pattern.compile("[^(<TD Nowrap >)](.)+[^(</TD>)]").matcher(result[2]);
-//		if (m.find())
-//			pi.setName(m.group());
-//		else 
-//			return null;
-		
+		// m =
+		// Pattern.compile("[^(<TD Nowrap >)](.)+[^(</TD>)]").matcher(result[2]);
+		// if (m.find())
+		// pi.setName(m.group());
+		// else
+		// return null;
+
 		return pi;
 	}
 
@@ -58,15 +59,15 @@ public class HtmlParser {
 				pSbj.setSbjName(m.group().split(">")[1].split("<")[0]);
 				break;
 			case 2:
-				String temp = m.group().split(">")[1].split("<")[0];
-				if(temp.matches("[0-9]+")){
-					int grade = Integer
-							.parseInt(m.group().split(">")[1].split("<")[0]);
-					pSbj.setSbjGrade(grade);
-				}else{
-					pSbj.setSbjLevel(temp);
-				}
+				// String temp = m.group().split(">")[1].split("<")[0];
+				// if(temp.matches("[0-9]+")){}
+				int grade = Integer
+						.parseInt(m.group().split(">")[1].split("<")[0]);
+				pSbj.setSbjGrade(grade);
 
+				// else{
+				// pSbj.setSbjLevel(temp);
+				// }
 				break;
 			case 3:
 				int times = Integer
@@ -74,12 +75,12 @@ public class HtmlParser {
 				pSbj.setSbjTimes(times);
 				break;
 			case 4:
-				String note=null;
-				String rawName =m.group().split(">")[1].split("<")[0];
+				String note = null;
+				String rawName = m.group().split(">")[1].split("<")[0];
 				Matcher nameM = Pattern.compile("[\\d-]").matcher(rawName);
-				if(nameM.find())
+				if (nameM.find())
 					note = nameM.replaceAll("");
-				note = note.split("_")[0]; 
+				note = note.split("_")[0];
 				pSbj.setSbjNote(note);
 				break;
 			}
