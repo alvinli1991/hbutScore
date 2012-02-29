@@ -1,6 +1,7 @@
-1.parse personsbj xml
-2.add the xml file check when hitting the logging button so the app know if there is data in the phone we can use 
-3.use service to retrieve the class data in the background and communicate with the activity
+1.add update function for person grades
+2.use service to retrieve the class data in the background and communicate with the activity
+3.add xml file check for class grades
+4.add update function for class grades
 
 
 do  later  figure how to get the add-up score of each one from the server
