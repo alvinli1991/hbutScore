@@ -9,12 +9,12 @@ import android.app.Application;
 
 public class HbutApp extends Application {
 
-	public PersonInf getPs() {
-		return ps;
+	public PersonInf getPsi() {
+		return psi;
 	}
 
-	public void setPs(PersonInf ps) {
-		this.ps = ps;
+	public void setPsi(PersonInf psi) {
+		this.psi = psi;
 	}
 
 	public List<PersonSbj> getpSbjList() {
@@ -26,5 +26,5 @@ public class HbutApp extends Application {
 	}
 
 	private List<PersonSbj> pSbjList;
-	private PersonInf ps;
+	private PersonInf psi;
 }

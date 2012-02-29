@@ -9,15 +9,10 @@ import com.hbut.util.PersonSbj;
 
 import android.app.ListActivity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,8 +24,6 @@ public class ShowActivity extends ListActivity {
 	ImageButton configBtn;
 	ImageButton updateBtn;
 	TextView infText;
-	ImageButton personBtn;
-	ImageButton classBtn;
 	HbutApp myapp;
 	ListView showListView;
 	List<PersonSbj> gradesContent;
@@ -46,13 +39,11 @@ public class ShowActivity extends ListActivity {
 		configBtn = (ImageButton) findViewById(R.id.configBtn);
 		updateBtn = (ImageButton) findViewById(R.id.updateBtn);
 		infText = (TextView) findViewById(R.id.inf);
-		personBtn = (ImageButton) findViewById(R.id.personBtn);
-		classBtn = (ImageButton) findViewById(R.id.classBtn);
 		showListView = (ListView) findViewById(android.R.id.list);
 		myapp = (HbutApp) getApplicationContext();
 		gradesContent = myapp.getpSbjList();
 		listData = buildListData();
-		infText.setText(myapp.getPs().getName() + "~" + myapp.getPs().getCls());
+		infText.setText(myapp.getPsi().getName() + "~" + myapp.getPsi().getCls());
 		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
 				items, itemsID));
 	}

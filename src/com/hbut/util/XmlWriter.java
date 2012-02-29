@@ -73,11 +73,13 @@ public class XmlWriter {
 			}
 			xmlSerializer.endTag(nmsp, XmlTag.eStu);
 			xmlSerializer.endDocument();
+			return xmlWriter.toString();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return null;
 		}
-		return xmlWriter.toString();
+		
 	}
 	
 	

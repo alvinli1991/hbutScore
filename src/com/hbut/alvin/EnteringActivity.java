@@ -1,7 +1,7 @@
 package com.hbut.alvin;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,9 +21,11 @@ import org.apache.http.params.HttpParams;
 
 import com.hbut.httpDownload.URIContainer;
 import com.hbut.util.HtmlParser;
+import com.hbut.util.PersonCombine;
 import com.hbut.util.PersonInf;
 import com.hbut.util.PersonSbj;
 import com.hbut.util.UriUtil;
+import com.hbut.util.XmlReader;
 import com.hbut.util.XmlWriter;
 import com.hbut.alvin.R;
 
@@ -32,7 +34,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -51,27 +52,28 @@ public class EnteringActivity extends Activity {
 	final static int DOWNLOAD = 1;
 	final static int ANALYSE = 2;
 	final static int SAVEING = 3;
+
 	final static int SERVERERROR = 4;
 	final static int PATHERROR = 5;
-	final static int NEXT = 6;
+	
+	final static int READDATA = 6;
+	final static int NEXT = 7;
+	boolean isRunning = false;
+	boolean hasPiFile = false;
+	boolean hasClsFile = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entering);
 		myApp = (HbutApp) getApplicationContext();
-		Bundle bundle = getIntent().getExtras();
-		pi = new PersonInf();
-		pi.setCls(bundle.getString("cls"));
-		pi.setName(bundle.getString("name"));
-		pi.setPwd(bundle.getString("pwd"));
-		pi.setID(bundle.getString("id"));
-		myApp.setPs(pi);
+		pi = myApp.getPsi();
 		processState = (TextView) findViewById(R.id.prcsState);
 		flowImg = (ImageView) findViewById(R.id.flowImg);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
-		progressBar.setMax(90);
+		progressBar.setMax(90); 
+		Bundle myBundle = getIntent().getExtras();
+		hasPiFile = myBundle.getBoolean("hasPiFile");
 		handler = new Handler() {
 
 			@Override
@@ -94,16 +96,21 @@ public class EnteringActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 					break;
 				case PATHERROR:
-					processState.setText("无SD卡……");
+					processState.setText("无SD卡,无法储存数据……");
 					break;
 				case NEXT:
 					progressBar.incrementProgressBy(30);
+					isRunning = false;
 					Intent intent = new Intent(EnteringActivity.this,
 							ShowActivity.class);
 					startActivity(intent);
 					finish();
 					break;
-
+				case READDATA:
+					processState.setText("读取数据……");
+					for(int i = 0;i<4;i++)
+						progressBar.incrementProgressBy(15);
+					break;
 				}
 			}
 
@@ -115,52 +122,85 @@ public class EnteringActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onStart();
 		Thread downloadThread = new Thread() {
-
 			@Override
 			public void run() {
-				// download
-				handler.sendMessage(handler.obtainMessage(DOWNLOAD));
-				String ownGradeDoc = getOwnGradeFileByID(pi.getID());
-				if (ownGradeDoc == null)
-					return;
+				while (isRunning) {
+					if (hasPiFile) {
+						handler.sendMessage(handler.obtainMessage(READDATA));
+						Log.v("file", String.valueOf(hasPiFile));
+						InputStream inputStream;
+						try {
+							inputStream = openFileInput(pi.getID() + ".xml");
+							PersonCombine pc = XmlReader
+									.pGradeXmlParser(inputStream);
+							myApp.setpSbjList(pc.getpSbjList());
+							handler.sendMessage(handler.obtainMessage(NEXT));
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
-				// analyse
-				handler.sendMessage(handler.obtainMessage(ANALYSE));
-				psSbjList = HtmlParser.parserPsSbj(ownGradeDoc);
-				if (psSbjList == null)
-					return;
-				myApp.setpSbjList(psSbjList);
+					} else {
+						// download
+						handler.sendMessage(handler.obtainMessage(DOWNLOAD));
+						String ownGradeDoc = getOwnGradeFileByID(pi.getID());
+						if (ownGradeDoc == null)
+							return;
 
-				// save
-				String pGradeXml = XmlWriter.writePGradeXml(psSbjList, pi);
-				if (!XmlWriter.hasPath()) {
-					handler.sendMessage(handler.obtainMessage(PATHERROR));
-					handler.sendMessage(handler.obtainMessage(NEXT));
-					return;
-				} else {
-					handler.sendMessage(handler.obtainMessage(SAVEING));
-					Log.v("pxml", pGradeXml);
-					OutputStream outStream;
-					try {
-						outStream = openFileOutput(pi.getID() + ".xml",
-								MODE_APPEND);
-						OutputStreamWriter outStreamWriter = new OutputStreamWriter(
-								outStream, "GBK");
-						outStreamWriter.write(pGradeXml);
-						outStreamWriter.close();
-						outStream.close();
-					} catch (Exception e) {
-						// TODO: handle exception
-						e.printStackTrace();
-						Log.v("streamerror", e.getLocalizedMessage());
+						// analyse
+						handler.sendMessage(handler.obtainMessage(ANALYSE));
+						psSbjList = HtmlParser.parserPsSbj(ownGradeDoc);
+						if (psSbjList == null)
+							return;
+
+						myApp.setpSbjList(psSbjList);
+
+						// save
+						String pGradeXml = XmlWriter.writePGradeXml(psSbjList,
+								pi);
+						if (pGradeXml == null)
+							return;
+						if (!XmlWriter.hasPath()) {
+							handler.sendMessage(handler
+									.obtainMessage(PATHERROR));
+							handler.sendMessage(handler.obtainMessage(NEXT));
+							return;
+						} else {
+							handler.sendMessage(handler.obtainMessage(SAVEING));
+							Log.v("pxml", pGradeXml);
+							OutputStream outStream;
+							try {
+								outStream = openFileOutput(pi.getID() + ".xml",
+										MODE_APPEND);
+								OutputStreamWriter outStreamWriter = new OutputStreamWriter(
+										outStream, "GBK");
+								outStreamWriter.write(pGradeXml);
+								outStreamWriter.close();
+								outStream.close();
+							} catch (Exception e) {
+								// TODO: handle exception
+								e.printStackTrace();
+								Log.v("streamerror", e.getLocalizedMessage());
+							}
+							handler.sendMessage(handler.obtainMessage(NEXT));
+						}
 					}
-					handler.sendMessage(handler.obtainMessage(NEXT));
+
 				}
 
 			}
 
 		};
+		isRunning = true;
 		downloadThread.start();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		isRunning = false;
+		Log.v("Thread", "end");
 	}
 
 	public String getOwnGradeFileByID(String ID) {
@@ -190,20 +230,23 @@ public class EnteringActivity extends Activity {
 			}
 			text = sb.toString();
 			br.close();
-
+			return text;
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			handler.sendMessage(handler.obtainMessage(SERVERERROR));
 			e.printStackTrace();
+			return null;
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 
 			e.printStackTrace();
 			httpget.abort();
+			return null;
 		} finally {
 			httpClient.getConnectionManager().shutdown();
 		}
-		return text;
+
 	}
 
 	public String getClsGradeFileByName(String clsName) {
@@ -234,28 +277,22 @@ public class EnteringActivity extends Activity {
 			}
 			text = sb.toString();
 			br.close();
-
+			return text;
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			handler.sendMessage(handler.obtainMessage(SERVERERROR));
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			handler.sendMessage(handler.obtainMessage(SERVERERROR));
 			e.printStackTrace();
 			httpget.abort();
+			return null;
 		} finally {
 			httpClient.getConnectionManager().shutdown();
 		}
-		return text;
+
 	}
 
-	public boolean hasFile(String id) {
-		String path = getApplicationContext().getFilesDir().getAbsolutePath();
-		File file = new File(path + id);
-		if (file.exists())
-			return true;
-		else
-			return false;
-	}
 }
