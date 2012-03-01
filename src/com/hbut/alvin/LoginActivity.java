@@ -7,24 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 
-import com.hbut.httpDownload.URIContainer;
+
+
 import com.hbut.util.HtmlParser;
 import com.hbut.util.PersonInf;
-import com.hbut.util.UriUtil;
 import com.hbut.util.XmlReader;
 import com.hbut.alvin.R;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,7 +26,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends DownLoadActivity {
 
 	PersonInf pi;
 	String pwd;
@@ -143,6 +134,7 @@ public class LoginActivity extends Activity {
 				} else {
 					pi = HtmlParser.parserPsInfo(getPsInfoFileByID(id));
 					if (pi == null) {
+						handler.sendMessage(handler.obtainMessage(SERVERERROR));
 						handler.sendMessage(handler.obtainMessage(DATAERROR));
 						return;
 					} else {
@@ -173,52 +165,6 @@ public class LoginActivity extends Activity {
 				return false;
 		} else
 			return false;
-
-	}
-
-	public String getPsInfoFileByID(String ID) {
-
-		HttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, 4000);
-		HttpConnectionParams.setSoTimeout(httpParams, 3000);
-		HttpClient httpClient = new DefaultHttpClient(httpParams);
-		String pwdUri = UriUtil.getRealUri(URIContainer.personInf, ID);
-
-		HttpGet httpget = new HttpGet(pwdUri);
-
-		String text = null;
-		try {
-			HttpResponse response = httpClient.execute(httpget);
-			HttpEntity entity = response.getEntity();
-
-			InputStreamReader isr = null;
-			BufferedReader br = null;
-			StringBuffer sb = new StringBuffer();
-			if (entity != null) {
-				InputStream instream = entity.getContent();
-				isr = new InputStreamReader(instream, "GBK");
-				br = new BufferedReader(isr);
-				String temp = null;
-				while ((temp = br.readLine()) != null)
-					sb.append(temp);
-			}
-			text = sb.toString();
-			br.close();
-			return text;
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			handler.sendMessage(handler.obtainMessage(SERVERERROR));
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			handler.sendMessage(handler.obtainMessage(SERVERERROR));
-			e.printStackTrace();
-			httpget.abort();
-			return null;
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
 
 	}
 

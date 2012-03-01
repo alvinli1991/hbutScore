@@ -61,15 +61,7 @@ public class ShowActivity extends ListActivity {
 				map.put("grdlevel", R.drawable.head);
 			else
 				map.put("grdlevel", R.drawable.android);
-			// } else {
-			// map.put("pGrade", n.getSbjLevel());
-			// if (n.getSbjLevel().equals("се"))
-			// map.put("grdlevel", R.drawable.head);
-			// else
-			// map.put("grdlevel", R.drawable.android);
-			// }
 			list.add(map);
-			// map.put("grdlevel", value);
 		}
 
 		return list;

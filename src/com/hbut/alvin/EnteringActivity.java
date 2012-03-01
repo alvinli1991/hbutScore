@@ -40,7 +40,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EnteringActivity extends Activity {
+public class EnteringActivity extends DownLoadActivity {
 
 	PersonInf pi;
 	TextView processState;
@@ -94,6 +94,7 @@ public class EnteringActivity extends Activity {
 				case SERVERERROR:
 					Toast.makeText(EnteringActivity.this, "服务器连接失败",
 							Toast.LENGTH_SHORT).show();
+					finish();
 					break;
 				case PATHERROR:
 					processState.setText("无SD卡,无法储存数据……");
@@ -144,14 +145,19 @@ public class EnteringActivity extends Activity {
 						// download
 						handler.sendMessage(handler.obtainMessage(DOWNLOAD));
 						String ownGradeDoc = getOwnGradeFileByID(pi.getID());
-						if (ownGradeDoc == null)
+						if (ownGradeDoc == null){
+							handler.sendMessage(handler.obtainMessage(SERVERERROR));
 							return;
+						}
+							
 
 						// analyse
 						handler.sendMessage(handler.obtainMessage(ANALYSE));
 						psSbjList = HtmlParser.parserPsSbj(ownGradeDoc);
-						if (psSbjList == null)
+						if (psSbjList == null){
 							return;
+						}
+							
 
 						myApp.setpSbjList(psSbjList);
 
@@ -203,96 +209,5 @@ public class EnteringActivity extends Activity {
 		Log.v("Thread", "end");
 	}
 
-	public String getOwnGradeFileByID(String ID) {
-
-		HttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, 4000);
-		HttpConnectionParams.setSoTimeout(httpParams, 3000);
-		HttpClient httpClient = new DefaultHttpClient(httpParams);
-
-		String pwdUri = UriUtil.getRealUri(URIContainer.personGrade, ID);
-		HttpGet httpget = new HttpGet(pwdUri);
-		String text = null;
-		HttpResponse response;
-		try {
-			response = httpClient.execute(httpget);
-			HttpEntity entity = response.getEntity();
-			InputStreamReader isr = null;
-			BufferedReader br = null;
-			StringBuffer sb = new StringBuffer();
-			if (entity != null) {
-				InputStream instream = entity.getContent();
-				isr = new InputStreamReader(instream, "GBK");
-				br = new BufferedReader(isr);
-				String temp = null;
-				while ((temp = br.readLine()) != null)
-					sb.append(temp);
-			}
-			text = sb.toString();
-			br.close();
-			return text;
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			handler.sendMessage(handler.obtainMessage(SERVERERROR));
-			e.printStackTrace();
-			return null;
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-
-			e.printStackTrace();
-			httpget.abort();
-			return null;
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
-
-	}
-
-	public String getClsGradeFileByName(String clsName) {
-
-		HttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, 4000);
-		HttpConnectionParams.setSoTimeout(httpParams, 3000);
-		HttpClient httpClient = new DefaultHttpClient(httpParams);
-
-		String pwdUri = UriUtil.getRealUri(URIContainer.classGrade,
-				UriUtil.gbkUriEncode(clsName));
-		HttpGet httpget = new HttpGet(pwdUri);
-		String text = null;
-		HttpResponse response;
-		try {
-			response = httpClient.execute(httpget);
-			HttpEntity entity = response.getEntity();
-			InputStreamReader isr = null;
-			BufferedReader br = null;
-			StringBuffer sb = new StringBuffer();
-			if (entity != null) {
-				InputStream instream = entity.getContent();
-				isr = new InputStreamReader(instream, "GBK");
-				br = new BufferedReader(isr);
-				String temp = null;
-				while ((temp = br.readLine()) != null)
-					sb.append(temp);
-			}
-			text = sb.toString();
-			br.close();
-			return text;
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			handler.sendMessage(handler.obtainMessage(SERVERERROR));
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			handler.sendMessage(handler.obtainMessage(SERVERERROR));
-			e.printStackTrace();
-			httpget.abort();
-			return null;
-		} finally {
-			httpClient.getConnectionManager().shutdown();
-		}
-
-	}
 
 }
