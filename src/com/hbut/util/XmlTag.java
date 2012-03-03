@@ -11,4 +11,5 @@ public class XmlTag {
 	public static final String grade = "grade";
 	public static final String note = "note";
 	public static final String times = "times";
+	public static final String count = "count";
 }

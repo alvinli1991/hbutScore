@@ -4,6 +4,16 @@ import java.util.regex.*;
 
 public class PersonInf {
 
+
+
+	public int getSbjCount() {
+		return sbjCount;
+	}
+
+	public void setSbjCount(int sbjNum) {
+		this.sbjCount = sbjNum;
+	}
+
 	public String getID() {
 		return ID;
 	}
@@ -36,11 +46,13 @@ public class PersonInf {
 		this.cls = cls;
 	}
 
+	
 	private String name;
 	private String pwd;
 	private String cls;
 	private String ID;
-
+	private int sbjCount;
+	
 	public static boolean checkID(String id) {
 		Pattern p = Pattern.compile("^[a-zA-z0-9]+$");
 		Matcher m = p.matcher(id);

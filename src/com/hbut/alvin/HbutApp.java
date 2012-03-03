@@ -11,6 +11,15 @@ import android.app.Application;
 
 public class HbutApp extends Application {
 
+
+	public boolean isClsDownloadEnd() {
+		return isClsDownloadEnd;
+	}
+
+	public void setClsDownloadEnd(boolean isClsDownloadEnd) {
+		this.isClsDownloadEnd = isClsDownloadEnd;
+	}
+
 	public Map<String, List<ClsStuSbj>> getClsSbj() {
 		return clsSbj;
 	}
@@ -38,4 +47,5 @@ public class HbutApp extends Application {
 	private List<PersonSbj> pSbjList;
 	private PersonInf psi;
 	private Map<String,List<ClsStuSbj>> clsSbj;
+	boolean isClsDownloadEnd = false;
 }

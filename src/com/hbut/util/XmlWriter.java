@@ -12,7 +12,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.os.Environment;
-import android.util.Log;
 
 public class XmlWriter {
 
@@ -29,21 +28,21 @@ public class XmlWriter {
 		StringWriter xmlWriter = new StringWriter();
 		String nmsp = "";
 		try {
-			Log.v("xmlWrite", "start");
 			// create xml parser
 			XmlPullParserFactory pullFactory = XmlPullParserFactory
 					.newInstance();
 			XmlSerializer xmlSerializer = pullFactory.newSerializer();
 			// bind
 			xmlSerializer.setOutput(xmlWriter);
-			// begin write
+			// <>
 			xmlSerializer.startDocument("GBK", true);
+			//<student id="" name="" pwd="" cls="" count=""></student>
 			xmlSerializer.startTag(nmsp, XmlTag.stu);
 			xmlSerializer.attribute(nmsp, XmlTag.id, pi.getID());
 			xmlSerializer.attribute(nmsp, XmlTag.name, pi.getName());
 			xmlSerializer.attribute(nmsp, XmlTag.pwd, pi.getPwd());
 			xmlSerializer.attribute(nmsp, XmlTag.cls, pi.getCls());
-
+			xmlSerializer.attribute(nmsp, XmlTag.count, Integer.toString(pi.getSbjCount()));
 			for (PersonSbj n : pList) {
 				// <subject>
 				xmlSerializer.startTag(nmsp, XmlTag.sbj);
@@ -82,12 +81,10 @@ public class XmlWriter {
 			}
 			xmlSerializer.endTag(nmsp, XmlTag.stu);
 			xmlSerializer.endDocument();
-			Log.v("xmlWrite", "finished");
 			return xmlWriter.toString();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			Log.v("xmlWrite", e.getLocalizedMessage());
 			return null;
 		}
 

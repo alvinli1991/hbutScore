@@ -10,6 +10,15 @@ import android.util.Log;
 
 public class HtmlParser {
 
+	public static int parserSbjCount(String countDoc){
+		Pattern p =Pattern.compile("target=\"FmRight\">\\d+</A>");
+		Matcher m = p.matcher(countDoc);
+		int count = 0;
+		boolean check = m.find();
+		count= Integer.parseInt(m.group().split(">")[1].split("<")[0]);
+		Log.v("count", Integer.toString(count));
+		return count;
+	}
 	public static Map<String, List<ClsStuSbj>> parserClsSbj(String clsDoc) {
 		Map<String, List<ClsStuSbj>> clsSbjMap = new HashMap<String, List<ClsStuSbj>>();
 		String oldKey = "";

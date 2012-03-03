@@ -10,9 +10,7 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-import org.xmlpull.v1.XmlSerializer;
 
-import android.util.Log;
 
 public class XmlReader {
 
@@ -50,6 +48,8 @@ public class XmlReader {
 							else if (xmlPullParser.getAttributeName(i)
 									.equalsIgnoreCase(XmlTag.cls))
 								pi.setCls(xmlPullParser.getAttributeValue(i));
+							else if(xmlPullParser.getAttributeName(i).equalsIgnoreCase(XmlTag.count))
+								pi.setSbjCount(Integer.parseInt(xmlPullParser.getAttributeValue(i)));
 						}
 					}
 					isEnd = true;
@@ -135,7 +135,6 @@ public class XmlReader {
 					if (tagName.equalsIgnoreCase(XmlTag.sbj))
 						pSbjList.add(psbj);
 					if (tagName.equalsIgnoreCase(XmlTag.stu)) {
-						Log.v("pull", "End");
 						pc.setPi(pi);
 						pc.setpSbjList(pSbjList);
 						return pc;

@@ -5,10 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import com.hbut.util.ClsStuSbj;
+
 import com.hbut.util.HtmlParser;
 import com.hbut.util.PersonCombine;
 import com.hbut.util.PersonInf;
@@ -49,7 +47,7 @@ public class EnteringActivity extends DownLoadActivity {
 	boolean hasPiFile = false;
 	boolean hasClsFile = false;
 	Thread downloadThread;
-	Thread testThread;
+//	Thread testThread;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -135,6 +133,7 @@ public class EnteringActivity extends DownLoadActivity {
 						}
 
 						// analyse
+						
 						handler.sendMessage(handler.obtainMessage(ANALYSE));
 						psSbjList = HtmlParser.parserPsSbj(ownGradeDoc);
 						if (psSbjList == null) {
@@ -155,7 +154,6 @@ public class EnteringActivity extends DownLoadActivity {
 							return;
 						} else {
 							handler.sendMessage(handler.obtainMessage(SAVEING));
-							Log.v("pxml", pGradeXml);
 							OutputStream outStream;
 							try {
 								outStream = openFileOutput(pi.getID() + ".xml",
@@ -168,7 +166,6 @@ public class EnteringActivity extends DownLoadActivity {
 							} catch (Exception e) {
 								// TODO: handle exception
 								e.printStackTrace();
-								Log.v("streamerror", e.getLocalizedMessage());
 							}
 							handler.sendMessage(handler.obtainMessage(NEXT));
 						}
@@ -181,33 +178,33 @@ public class EnteringActivity extends DownLoadActivity {
 		};
 
 		/////////////////////////////////////test
-		testThread = new Thread(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				super.run();
-				String clsDoc= getClsGradeFileByName(pi.getCls());
-				Map<String,List<ClsStuSbj>> clsMap=HtmlParser.parserClsSbj(clsDoc);
-				String cGradeXml = XmlWriter.writeCGradeXml(clsMap, PersonInf.getCidByID(pi.getID()));
-				OutputStream outStream;
-				try {
-					outStream = openFileOutput(PersonInf.getCidByID(pi.getID()) + ".xml",
-							MODE_PRIVATE);
-					OutputStreamWriter outStreamWriter = new OutputStreamWriter(
-							outStream, "GBK");
-					outStreamWriter.write(cGradeXml);
-					outStreamWriter.close();
-					outStream.close();
-					Log.v("wirte", "finish");
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-					Log.v("streamerror", e.getLocalizedMessage());
-				}
-			}
-			
-		};
+//		testThread = new Thread(){
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				super.run();
+//				String clsDoc= getClsGradeFileByName(pi.getCls());
+//				Map<String,List<ClsStuSbj>> clsMap=HtmlParser.parserClsSbj(clsDoc);
+//				String cGradeXml = XmlWriter.writeCGradeXml(clsMap, PersonInf.getCidByID(pi.getID()));
+//				OutputStream outStream;
+//				try {
+//					outStream = openFileOutput(PersonInf.getCidByID(pi.getID()) + ".xml",
+//							MODE_PRIVATE);
+//					OutputStreamWriter outStreamWriter = new OutputStreamWriter(
+//							outStream, "GBK");
+//					outStreamWriter.write(cGradeXml);
+//					outStreamWriter.close();
+//					outStream.close();
+//					Log.v("wirte", "finish");
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//					e.printStackTrace();
+//					Log.v("streamerror", e.getLocalizedMessage());
+//				}
+//			}
+//			
+//		};
 		////////////////////////////////////////
 	}
 
@@ -216,8 +213,7 @@ public class EnteringActivity extends DownLoadActivity {
 		// TODO Auto-generated method stub
 		super.onStart();
 		isRunning = true;
-		//downloadThread.start();
-		testThread.start();
+		downloadThread.start();
 	}
 
 	@Override
@@ -225,9 +221,8 @@ public class EnteringActivity extends DownLoadActivity {
 		// TODO Auto-generated method stub
 		super.onStop();
 		isRunning = false;
-		testThread.stop();
+//		testThread.stop();
 		finish();
-		Log.v("Thread", "end");
 	}
 
 }

@@ -35,7 +35,6 @@ public class LoginActivity extends DownLoadActivity {
 	final static int DATAERROR = 3;
 	HbutApp myApp;
 	boolean hasPiFile = false;
-	boolean hasClsFile = false;
 	Handler handler;
 
 	@Override
@@ -71,6 +70,9 @@ public class LoginActivity extends DownLoadActivity {
 								EnteringActivity.class);
 						intent.putExtras(myBundle);
 						startActivity(intent);
+						
+						Intent serviceIntent = new Intent(LoginActivity.this,ClsService.class);
+						startService(serviceIntent);
 					} else {
 						Toast.makeText(LoginActivity.this, "√‹¬Î¥ÌŒÛ!!!",
 								Toast.LENGTH_SHORT).show();
@@ -130,6 +132,7 @@ public class LoginActivity extends DownLoadActivity {
 
 				} else {
 					String doc = getPsInfoFileByID(id);
+
 					if(doc == null){
 						handler.sendMessage(handler.obtainMessage(SERVERERROR));
 						return ;
@@ -139,6 +142,9 @@ public class LoginActivity extends DownLoadActivity {
 						handler.sendMessage(handler.obtainMessage(DATAERROR));
 						return;
 					} else {
+						String sbjCountDoc = getSbjCountFileByID(id);
+						int sbjCount= HtmlParser.parserSbjCount(sbjCountDoc);
+						pi.setSbjCount(sbjCount);
 						pi.setID(id);
 						handler.sendMessage(handler.obtainMessage(CHECK));
 					}
