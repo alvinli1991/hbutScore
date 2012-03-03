@@ -49,4 +49,13 @@ public class PersonInf {
 		else
 			return false;
 	}
+
+	public static String getCidByID(String id) {
+		Pattern p = Pattern.compile("\\d{7}");
+		Matcher m = p.matcher(id);
+		if (m.find())
+			return m.group();
+		else
+			return null;
+	}
 }

@@ -1,19 +1,14 @@
 package com.hbut.util;
 
 public class XmlTag {
-	//student xml tags 
-	public static final String eStu="student";
-	public static final String eSub="subject";
-	//student xml attribute
-	public static final String aStuID = "id";
-	public static final String aStuName = "name";
-	public static final String aStuPwd = "pwd";
-	public static final String aStuCls = "cls";
-	//subject tags
-	public static final String eSubId = "id";
-	public static final String eSubName = "name";
-	public static final String eSubGrade = "grade";
-	public static final String eSubNote = "note";
-//	public static final String eSubLevel = "level";
-	public static final String eSubTimes = "times";
+
+	public static final String stu="student";
+	public static final String sbj="subject";
+	public static final String id = "id";
+	public static final String name = "name";
+	public static final String pwd = "pwd";
+	public static final String cls = "cls";
+	public static final String grade = "grade";
+	public static final String note = "note";
+	public static final String times = "times";
 }

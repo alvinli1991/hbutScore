@@ -1,9 +1,57 @@
 package com.hbut.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.*;
 
+import android.util.Log;
+
 public class HtmlParser {
+
+	public static Map<String, List<ClsStuSbj>> parserClsSbj(String clsDoc) {
+		Map<String, List<ClsStuSbj>> clsSbjMap = new HashMap<String, List<ClsStuSbj>>();
+		String oldKey = "";
+		String newKey = null;
+		List<ClsStuSbj> clsStuSbjList = null;
+		List<ClsStuSbj> clsStuSbjListT = null;
+		ClsStuSbj clsStusbj = null;
+		Pattern p = Pattern.compile("<TD Nowrap >[^<]*</TD>");
+		Matcher m = p.matcher(clsDoc);
+		int count = 0;
+		while (m.find()) {
+
+			switch (count) {
+			case 0:
+				newKey = m.group().split(">")[1].split("<")[0];
+				if (!newKey.equalsIgnoreCase(oldKey)) {
+					clsStuSbjListT = clsStuSbjList;
+					clsStuSbjList = new ArrayList<ClsStuSbj>();
+				}
+				count = 1;
+				break;
+			case 1:
+				clsStusbj = new ClsStuSbj();
+				clsStusbj.setStuName(m.group().split(">")[1].split("<")[0]);
+				count = 2;
+				break;
+			case 2:
+				clsStusbj.setStuGrade(Integer.parseInt(m.group().split(">")[1]
+						.split("<")[0]));
+				clsStuSbjList.add(clsStusbj);
+				if (!newKey.equalsIgnoreCase(oldKey) && !oldKey.equals(""))
+					if (clsStuSbjListT != null)
+						clsSbjMap.put(oldKey, clsStuSbjListT);		
+				count = 0;
+				oldKey = newKey;
+				break;
+			}
+		}
+		clsSbjMap.put(oldKey, clsStuSbjList);
+		Log.v("map", "finish");
+		return clsSbjMap;
+	}
 
 	/*
 	 * get personal info from the file downloaded and contains these
@@ -94,7 +142,6 @@ public class HtmlParser {
 			}
 
 		}
-		System.out.println();
 		return pSbjList;
 	}
 }

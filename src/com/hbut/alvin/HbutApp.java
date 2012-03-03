@@ -1,13 +1,23 @@
 package com.hbut.alvin;
 
 import java.util.List;
+import java.util.Map;
 
+import com.hbut.util.ClsStuSbj;
 import com.hbut.util.PersonInf;
 import com.hbut.util.PersonSbj;
 
 import android.app.Application;
 
 public class HbutApp extends Application {
+
+	public Map<String, List<ClsStuSbj>> getClsSbj() {
+		return clsSbj;
+	}
+
+	public void setClsSbj(Map<String, List<ClsStuSbj>> clsSbj) {
+		this.clsSbj = clsSbj;
+	}
 
 	public PersonInf getPsi() {
 		return psi;
@@ -27,4 +37,5 @@ public class HbutApp extends Application {
 
 	private List<PersonSbj> pSbjList;
 	private PersonInf psi;
+	private Map<String,List<ClsStuSbj>> clsSbj;
 }

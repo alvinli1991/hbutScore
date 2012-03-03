@@ -1,11 +1,8 @@
 package com.hbut.alvin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 
 
@@ -132,9 +129,13 @@ public class LoginActivity extends DownLoadActivity {
 					}
 
 				} else {
-					pi = HtmlParser.parserPsInfo(getPsInfoFileByID(id));
-					if (pi == null) {
+					String doc = getPsInfoFileByID(id);
+					if(doc == null){
 						handler.sendMessage(handler.obtainMessage(SERVERERROR));
+						return ;
+					}
+					pi = HtmlParser.parserPsInfo(doc);
+					if (pi == null) {	
 						handler.sendMessage(handler.obtainMessage(DATAERROR));
 						return;
 					} else {

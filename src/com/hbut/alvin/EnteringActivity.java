@@ -1,35 +1,22 @@
 package com.hbut.alvin;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
-import com.hbut.httpDownload.URIContainer;
+import com.hbut.util.ClsStuSbj;
 import com.hbut.util.HtmlParser;
 import com.hbut.util.PersonCombine;
 import com.hbut.util.PersonInf;
 import com.hbut.util.PersonSbj;
-import com.hbut.util.UriUtil;
 import com.hbut.util.XmlReader;
 import com.hbut.util.XmlWriter;
 import com.hbut.alvin.R;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,13 +42,14 @@ public class EnteringActivity extends DownLoadActivity {
 
 	final static int SERVERERROR = 4;
 	final static int PATHERROR = 5;
-	
-	final static int READDATA = 6;
-	final static int NEXT = 7;
+	final static int ANALYSEERROR = 6;
+	final static int READDATA = 7;
+	final static int NEXT = 8;
 	boolean isRunning = false;
 	boolean hasPiFile = false;
 	boolean hasClsFile = false;
-
+	Thread downloadThread;
+	Thread testThread;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,7 +59,7 @@ public class EnteringActivity extends DownLoadActivity {
 		processState = (TextView) findViewById(R.id.prcsState);
 		flowImg = (ImageView) findViewById(R.id.flowImg);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
-		progressBar.setMax(90); 
+		progressBar.setMax(90);
 		Bundle myBundle = getIntent().getExtras();
 		hasPiFile = myBundle.getBoolean("hasPiFile");
 		handler = new Handler() {
@@ -109,20 +97,15 @@ public class EnteringActivity extends DownLoadActivity {
 					break;
 				case READDATA:
 					processState.setText("¶ÁÈ¡Êý¾Ý¡­¡­");
-					for(int i = 0;i<4;i++)
+					for (int i = 0; i < 4; i++)
 						progressBar.incrementProgressBy(15);
 					break;
 				}
 			}
 
 		};
-	}
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		Thread downloadThread = new Thread() {
+		downloadThread = new Thread() {
 			@Override
 			public void run() {
 				while (isRunning) {
@@ -145,19 +128,18 @@ public class EnteringActivity extends DownLoadActivity {
 						// download
 						handler.sendMessage(handler.obtainMessage(DOWNLOAD));
 						String ownGradeDoc = getOwnGradeFileByID(pi.getID());
-						if (ownGradeDoc == null){
-							handler.sendMessage(handler.obtainMessage(SERVERERROR));
+						if (ownGradeDoc == null) {
+							handler.sendMessage(handler
+									.obtainMessage(SERVERERROR));
 							return;
 						}
-							
 
 						// analyse
 						handler.sendMessage(handler.obtainMessage(ANALYSE));
 						psSbjList = HtmlParser.parserPsSbj(ownGradeDoc);
-						if (psSbjList == null){
+						if (psSbjList == null) {
 							return;
 						}
-							
 
 						myApp.setpSbjList(psSbjList);
 
@@ -177,7 +159,7 @@ public class EnteringActivity extends DownLoadActivity {
 							OutputStream outStream;
 							try {
 								outStream = openFileOutput(pi.getID() + ".xml",
-										MODE_APPEND);
+										MODE_PRIVATE);
 								OutputStreamWriter outStreamWriter = new OutputStreamWriter(
 										outStream, "GBK");
 								outStreamWriter.write(pGradeXml);
@@ -197,8 +179,45 @@ public class EnteringActivity extends DownLoadActivity {
 			}
 
 		};
+
+		/////////////////////////////////////test
+		testThread = new Thread(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				super.run();
+				String clsDoc= getClsGradeFileByName(pi.getCls());
+				Map<String,List<ClsStuSbj>> clsMap=HtmlParser.parserClsSbj(clsDoc);
+				String cGradeXml = XmlWriter.writeCGradeXml(clsMap, PersonInf.getCidByID(pi.getID()));
+				OutputStream outStream;
+				try {
+					outStream = openFileOutput(PersonInf.getCidByID(pi.getID()) + ".xml",
+							MODE_PRIVATE);
+					OutputStreamWriter outStreamWriter = new OutputStreamWriter(
+							outStream, "GBK");
+					outStreamWriter.write(cGradeXml);
+					outStreamWriter.close();
+					outStream.close();
+					Log.v("wirte", "finish");
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					Log.v("streamerror", e.getLocalizedMessage());
+				}
+			}
+			
+		};
+		////////////////////////////////////////
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
 		isRunning = true;
-		downloadThread.start();
+		//downloadThread.start();
+		testThread.start();
 	}
 
 	@Override
@@ -206,8 +225,9 @@ public class EnteringActivity extends DownLoadActivity {
 		// TODO Auto-generated method stub
 		super.onStop();
 		isRunning = false;
+		testThread.stop();
+		finish();
 		Log.v("Thread", "end");
 	}
-
 
 }

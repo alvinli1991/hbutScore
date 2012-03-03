@@ -1,14 +1,18 @@
 package com.hbut.alvin;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.hbut.util.PersonSbj;
+
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class ShowActivity extends ListActivity {
+
+
+
 
 	ImageButton configBtn;
 	ImageButton updateBtn;
@@ -41,13 +48,28 @@ public class ShowActivity extends ListActivity {
 		infText = (TextView) findViewById(R.id.inf);
 		showListView = (ListView) findViewById(android.R.id.list);
 		myapp = (HbutApp) getApplicationContext();
-		gradesContent = myapp.getpSbjList();
-		listData = buildListData();
+		gradesContent = myapp.getpSbjList();	
 		infText.setText(myapp.getPsi().getName() + "~" + myapp.getPsi().getCls());
+		
+		listData = buildListData();
+		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
+				items, itemsID));
+		
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		listData = buildListData();
 		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
 				items, itemsID));
 	}
-
+	
+	public void onUpdateCliked(View updateBtn){
+		Intent intent = new Intent(ShowActivity.this,UpdateActivity.class);
+		startActivity(intent);
+	}
 	private List<Map<String, Object>> buildListData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = null;

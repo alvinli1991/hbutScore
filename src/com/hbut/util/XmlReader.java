@@ -3,10 +3,14 @@ package com.hbut.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+import org.xmlpull.v1.XmlSerializer;
 
 import android.util.Log;
 
@@ -32,19 +36,19 @@ public class XmlReader {
 					break;
 				case XmlPullParser.START_TAG: {
 					tagName = xmlPullParser.getName();
-					if (tagName.equalsIgnoreCase(XmlTag.eStu)) {
+					if (tagName.equalsIgnoreCase(XmlTag.stu)) {
 						for (int i = 0; i < xmlPullParser.getAttributeCount(); i++) {
 							if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuID))
+									.equalsIgnoreCase(XmlTag.id))
 								pi.setID(xmlPullParser.getAttributeValue(i));
 							else if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuName))
+									.equalsIgnoreCase(XmlTag.name))
 								pi.setName(xmlPullParser.getAttributeValue(i));
 							else if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuPwd))
+									.equalsIgnoreCase(XmlTag.pwd))
 								pi.setPwd(xmlPullParser.getAttributeValue(i));
 							else if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuCls))
+									.equalsIgnoreCase(XmlTag.cls))
 								pi.setCls(xmlPullParser.getAttributeValue(i));
 						}
 					}
@@ -93,33 +97,33 @@ public class XmlReader {
 					break;
 				case XmlPullParser.START_TAG: {
 					tagName = xmlPullParser.getName();
-					if (tagName.equalsIgnoreCase(XmlTag.eStu)) {
+					if (tagName.equalsIgnoreCase(XmlTag.stu)) {
 						for (int i = 0; i < xmlPullParser.getAttributeCount(); i++) {
 							if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuID))
+									.equalsIgnoreCase(XmlTag.id))
 								pi.setID(xmlPullParser.getAttributeValue(i));
 							else if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuName))
+									.equalsIgnoreCase(XmlTag.name))
 								pi.setName(xmlPullParser.getAttributeValue(i));
 							else if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuPwd))
+									.equalsIgnoreCase(XmlTag.pwd))
 								pi.setPwd(xmlPullParser.getAttributeValue(i));
 							else if (xmlPullParser.getAttributeName(i)
-									.equalsIgnoreCase(XmlTag.aStuCls))
+									.equalsIgnoreCase(XmlTag.cls))
 								pi.setCls(xmlPullParser.getAttributeValue(i));
 						}
-					} else if (tagName.equalsIgnoreCase(XmlTag.eSub)) {
+					} else if (tagName.equalsIgnoreCase(XmlTag.sbj)) {
 						psbj = new PersonSbj();
-					} else if (tagName.equalsIgnoreCase(XmlTag.eSubId)) {
+					} else if (tagName.equalsIgnoreCase(XmlTag.id)) {
 						psbj.setSbjID(xmlPullParser.nextText());
-					} else if (tagName.equalsIgnoreCase(XmlTag.eSubName)) {
+					} else if (tagName.equalsIgnoreCase(XmlTag.name)) {
 						psbj.setSbjName(xmlPullParser.nextText());
-					} else if (tagName.equalsIgnoreCase(XmlTag.eSubNote)) {
+					} else if (tagName.equalsIgnoreCase(XmlTag.note)) {
 						psbj.setSbjNote(xmlPullParser.nextText());
-					} else if (tagName.equalsIgnoreCase(XmlTag.eSubTimes)) {
+					} else if (tagName.equalsIgnoreCase(XmlTag.times)) {
 						psbj.setSbjTimes(Integer.parseInt(xmlPullParser
 								.nextText()));
-					} else if (tagName.equalsIgnoreCase(XmlTag.eSubGrade)) {
+					} else if (tagName.equalsIgnoreCase(XmlTag.grade)) {
 						psbj.setSbjGrade(Integer.parseInt(xmlPullParser
 								.nextText()));
 					}
@@ -128,9 +132,9 @@ public class XmlReader {
 					break;
 				case XmlPullParser.END_TAG: {
 					tagName = xmlPullParser.getName();
-					if (tagName.equalsIgnoreCase(XmlTag.eSub))
+					if (tagName.equalsIgnoreCase(XmlTag.sbj))
 						pSbjList.add(psbj);
-					if (tagName.equalsIgnoreCase(XmlTag.eStu)) {
+					if (tagName.equalsIgnoreCase(XmlTag.stu)) {
 						Log.v("pull", "End");
 						pc.setPi(pi);
 						pc.setpSbjList(pSbjList);
@@ -155,4 +159,61 @@ public class XmlReader {
 
 	}
 
+	public static Map<String, List<ClsStuSbj>> cGradeXmlParser(
+			InputStream inStream) {
+		String key = null;
+		ClsStuSbj clsStuSbj = null;
+		List<ClsStuSbj> clsStuSbjList = null;
+		Map<String, List<ClsStuSbj>> clsMap = null;
+		try {
+			// create parser
+			XmlPullParserFactory pullFactory = XmlPullParserFactory
+					.newInstance();
+			XmlPullParser xmlPullParser = pullFactory.newPullParser();
+			// begin parser
+			xmlPullParser.setInput(inStream, "GBK");
+			int eventType = xmlPullParser.getEventType();
+			String tagName = null;
+			while (eventType != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.START_DOCUMENT:
+					clsMap = new HashMap<String, List<ClsStuSbj>>();
+					break;
+				case XmlPullParser.START_TAG:
+					tagName = xmlPullParser.getName();
+					if (tagName.equalsIgnoreCase(XmlTag.sbj)) {
+						key = xmlPullParser.getAttributeName(0);
+						clsStuSbjList = new ArrayList<ClsStuSbj>();
+					} else if (tagName.equalsIgnoreCase(XmlTag.stu)) {
+						clsStuSbj = new ClsStuSbj();
+					} else if (tagName.equalsIgnoreCase(XmlTag.name)) {
+						clsStuSbj.setStuName(xmlPullParser.nextText());
+					} else if (tagName.equalsIgnoreCase(XmlTag.grade)) {
+						clsStuSbj.setStuGrade(Integer.parseInt(xmlPullParser
+								.nextText()));
+					}
+					break;
+				case XmlPullParser.END_TAG:
+					tagName = xmlPullParser.getName();
+					if (tagName.equalsIgnoreCase(XmlTag.sbj)) {
+						clsMap.put(key, clsStuSbjList);
+					} else if (tagName.equalsIgnoreCase(XmlTag.stu)) {
+						clsStuSbjList.add(clsStuSbj);
+					}
+					break;
+				}
+				eventType = xmlPullParser.next();
+			}
+			return clsMap;
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+
+	}
 }
