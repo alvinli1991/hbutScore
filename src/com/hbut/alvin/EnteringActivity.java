@@ -41,9 +41,9 @@ public class EnteringActivity extends DownLoadActivity {
 	final static int SERVERERROR = 4;
 	final static int PATHERROR = 5;
 	final static int ANALYSEERROR = 6;
-	final static int READDATA = 7;
-	final static int NEXT = 8;
-	boolean isRunning = false;
+	final static int CONNECTERROR=7;
+	final static int READDATA = 8;
+	final static int NEXT = 9;
 	boolean hasPiFile = false;
 	boolean hasClsFile = false;
 	Thread downloadThread;
@@ -60,6 +60,7 @@ public class EnteringActivity extends DownLoadActivity {
 		progressBar.setMax(90);
 		Bundle myBundle = getIntent().getExtras();
 		hasPiFile = myBundle.getBoolean("hasPiFile");
+		
 		handler = new Handler() {
 
 			@Override
@@ -87,7 +88,6 @@ public class EnteringActivity extends DownLoadActivity {
 					break;
 				case NEXT:
 					progressBar.incrementProgressBy(30);
-					isRunning = false;
 					Intent intent = new Intent(EnteringActivity.this,
 							ShowActivity.class);
 					startActivity(intent);
@@ -98,15 +98,19 @@ public class EnteringActivity extends DownLoadActivity {
 					for (int i = 0; i < 4; i++)
 						progressBar.incrementProgressBy(15);
 					break;
+				case CONNECTERROR:
+					Toast.makeText(EnteringActivity.this, "ÎÞÍøÂçÁ¬½Ó",
+							Toast.LENGTH_SHORT).show();
+					finish();
+					break;
 				}
 			}
 
 		};
 
-		downloadThread = new Thread() {
+		downloadThread = new Thread("downloadThread") {
 			@Override
 			public void run() {
-				while (isRunning) {
 					if (hasPiFile) {
 						handler.sendMessage(handler.obtainMessage(READDATA));
 						Log.v("file", String.valueOf(hasPiFile));
@@ -123,6 +127,11 @@ public class EnteringActivity extends DownLoadActivity {
 						}
 
 					} else {
+						
+						if(hasNetWork()==false){
+							handler.sendMessage(handler.obtainMessage(CONNECTERROR));
+							return;
+						}
 						// download
 						handler.sendMessage(handler.obtainMessage(DOWNLOAD));
 						String ownGradeDoc = getOwnGradeFileByID(pi.getID());
@@ -171,48 +180,18 @@ public class EnteringActivity extends DownLoadActivity {
 						}
 					}
 
-				}
 
 			}
 
 		};
 
-		/////////////////////////////////////test
-//		testThread = new Thread(){
-//
-//			@Override
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				super.run();
-//				String clsDoc= getClsGradeFileByName(pi.getCls());
-//				Map<String,List<ClsStuSbj>> clsMap=HtmlParser.parserClsSbj(clsDoc);
-//				String cGradeXml = XmlWriter.writeCGradeXml(clsMap, PersonInf.getCidByID(pi.getID()));
-//				OutputStream outStream;
-//				try {
-//					outStream = openFileOutput(PersonInf.getCidByID(pi.getID()) + ".xml",
-//							MODE_PRIVATE);
-//					OutputStreamWriter outStreamWriter = new OutputStreamWriter(
-//							outStream, "GBK");
-//					outStreamWriter.write(cGradeXml);
-//					outStreamWriter.close();
-//					outStream.close();
-//					Log.v("wirte", "finish");
-//				} catch (Exception e) {
-//					// TODO: handle exception
-//					e.printStackTrace();
-//					Log.v("streamerror", e.getLocalizedMessage());
-//				}
-//			}
-//			
-//		};
-		////////////////////////////////////////
+		
 	}
 
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		isRunning = true;
 		downloadThread.start();
 	}
 
@@ -220,9 +199,7 @@ public class EnteringActivity extends DownLoadActivity {
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		isRunning = false;
-//		testThread.stop();
-		finish();
 	}
+
 
 }

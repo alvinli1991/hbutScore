@@ -41,27 +41,13 @@ public class ClassShowActivity extends ListActivity {
 	int[] itemsID = {R.id.sbjRank,R.id.stuName,R.id.stuGrade};
 	String sbjName = null;
 	String sbjID = null;
-	Handler handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cshow);
-		handler = new Handler(){
 
-			@Override
-			public void handleMessage(Message msg) {
-				// TODO Auto-generated method stub
-				switch(msg.what){
-				case NOTSBJERROR:
-					Toast.makeText(ClassShowActivity.this, "只有你选了这门课哦！", Toast.LENGTH_LONG);
-					finish();
-					break;
-				}
-			}
-			
-		};
 		//get the sbjID and sbjName
 		Intent intent = getIntent();
 		sbjID = intent.getStringExtra("sbjID");
@@ -76,7 +62,7 @@ public class ClassShowActivity extends ListActivity {
 		clsStuSbjMap = myapp.getClsSbj();
 		stuSbjList = clsStuSbjMap.get(sbjID);
 		if(stuSbjList == null){
-			handler.sendMessage(handler.obtainMessage(NOTSBJERROR));
+			finish();
 			return;
 		}
 		//setAdapter
@@ -92,7 +78,7 @@ public class ClassShowActivity extends ListActivity {
 		clsStuSbjMap = myapp.getClsSbj();
 		stuSbjList = clsStuSbjMap.get(sbjID);
 		if(stuSbjList == null){
-			handler.sendMessage(handler.obtainMessage(NOTSBJERROR));
+			finish();
 			return;
 		}
 	}

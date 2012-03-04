@@ -1,14 +1,11 @@
 package com.hbut.alvin;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import com.hbut.util.PersonSbj;
-
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -30,11 +27,9 @@ import android.widget.Toast;
 
 public class ShowActivity extends ListActivity {
 
-
-
-	final static int SERVICENOTDONE =1;
-
-	ImageButton configBtn;
+	final static int SERVICENOTDONE = 1;
+	final static int NOTSBJERROR = 2;
+	ImageButton outBtn;
 	ImageButton updateBtn;
 	TextView infText;
 	HbutApp myapp;
@@ -44,57 +39,72 @@ public class ShowActivity extends ListActivity {
 	String[] items = { "sbjName", "sbjNote", "pGrade", "grdlevel" };
 	int[] itemsID = { R.id.sbjName, R.id.sbjNote, R.id.pGrade, R.id.grdlevel };
 	Handler handler;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show);
-		configBtn = (ImageButton) findViewById(R.id.configBtn);
-		updateBtn = (ImageButton) findViewById(R.id.updateBtn);
-		infText = (TextView) findViewById(R.id.inf);
-		showListView = (ListView) findViewById(android.R.id.list);
-		myapp = (HbutApp) getApplicationContext();
-		gradesContent = myapp.getpSbjList();	
-		infText.setText(myapp.getPsi().getName() + "~" + myapp.getPsi().getCls());
-		
-		listData = buildListData();
-		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
-				items, itemsID));
-		
-		handler = new Handler(){
+
+		handler = new Handler() {
 
 			@Override
 			public void handleMessage(Message msg) {
 				// TODO Auto-generated method stub
 				super.handleMessage(msg);
-				switch(msg.what){
+				switch (msg.what) {
 				case SERVICENOTDONE:
-					Toast.makeText(ShowActivity.this, "数据还在处理……", Toast.LENGTH_SHORT);
+					Toast.makeText(ShowActivity.this, "数据还在处理……",
+							Toast.LENGTH_SHORT).show();
+					break;
+				case NOTSBJERROR:
+					Toast.makeText(ShowActivity.this, "只有你选了这门课哦！",
+							Toast.LENGTH_SHORT).show();
 					break;
 				}
 			}
-			
+
 		};
+		outBtn = (ImageButton) findViewById(R.id.outBtn);
+		updateBtn = (ImageButton) findViewById(R.id.updateBtn);
+		infText = (TextView) findViewById(R.id.inf);
+		showListView = (ListView) findViewById(android.R.id.list);
+		myapp = (HbutApp) getApplicationContext();
+		gradesContent = myapp.getpSbjList();
+		infText.setText(myapp.getPsi().getName() + "~"
+				+ myapp.getPsi().getCls());
+
+		listData = buildListData();
+		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
+				items, itemsID));
+
 		showListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(!myapp.isClsDownloadEnd()){
+				if (!myapp.isClsDownloadEnd()) {
 					handler.sendMessage(handler.obtainMessage(SERVICENOTDONE));
 					return;
 				}
-				Map<String,Object> map = (Map<String, Object>) arg0.getItemAtPosition(arg2);
+				Map<String, Object> map = (Map<String, Object>) arg0
+						.getItemAtPosition(arg2);
 				String sbjID = ((String) map.get("sbjNote")).split("_")[0];
+				if (myapp.getClsSbj().get(sbjID) == null) {
+					handler.sendMessage(handler.obtainMessage(NOTSBJERROR));
+					return;
+				}
 				String sbjName = (String) map.get("sbjName");
-				Intent intent = new Intent(ShowActivity.this,ClassShowActivity.class);
+				Intent intent = new Intent(ShowActivity.this,
+						ClassShowActivity.class);
 				intent.putExtra("sbjID", sbjID);
 				intent.putExtra("sbjName", sbjName);
 				startActivity(intent);
+
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -105,10 +115,13 @@ public class ShowActivity extends ListActivity {
 		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
 				items, itemsID));
 	}
-	
-	public void onUpdateCliked(View updateBtn){
-		Intent intent = new Intent(ShowActivity.this,UpdateActivity.class);
+
+	public void onUpdateClicked(View updateBtn) {
+		Intent intent = new Intent(ShowActivity.this, UpdateActivity.class);
 		startActivity(intent);
+	}
+	public void onOutClicked(View updateBtn){
+		finish();
 	}
 	private List<Map<String, Object>> buildListData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

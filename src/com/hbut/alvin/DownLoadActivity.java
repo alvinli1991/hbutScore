@@ -19,9 +19,21 @@ import com.hbut.httpDownload.URIContainer;
 import com.hbut.util.UriUtil;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class DownLoadActivity extends Activity {
 
+	public boolean hasNetWork(){
+		ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo net = conMgr.getActiveNetworkInfo();
+		if(net == null)
+			return false;
+		else
+			return true;
+	}
+	
 	public String getSbjCountFileByID(String id){
 		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 4000);

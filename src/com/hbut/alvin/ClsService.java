@@ -57,6 +57,7 @@ public class ClsService extends Service {
 	final static int PATHERROR = 3;
 	final static int END = 4;
 	final static int FINISH = 5;
+	final static int CONNECTERROR = 6;
 	
 	final class ServiceHandler extends Handler {
 
@@ -66,12 +67,13 @@ public class ClsService extends Service {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case START:
-				Log.v("downloadThread", "start");
 				downloadThread.start();
 				break;
 			case DOWNLOADERROR:
 				Toast.makeText(ClsService.this, "连接失败，无法显示班级成绩",
 						Toast.LENGTH_SHORT).show();
+				mServiceHandler.sendMessage(mServiceHandler
+						.obtainMessage(END));
 				break;
 			case DATAERROR:
 				Toast.makeText(ClsService.this, "数据分析失败，无法显示班级数据",
@@ -89,6 +91,12 @@ public class ClsService extends Service {
 				myapp.setClsDownloadEnd(true);
 				Toast.makeText(ClsService.this, "可以查看班级数据了",
 						Toast.LENGTH_LONG).show();
+				break;
+			case CONNECTERROR:
+				Toast.makeText(ClsService.this, "无网络连接",
+						Toast.LENGTH_LONG).show();
+				mServiceHandler.sendMessage(mServiceHandler
+						.obtainMessage(END));
 				break;
 			}
 
@@ -115,7 +123,7 @@ public class ClsService extends Service {
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
 
-		downloadThread = new Thread() {
+		downloadThread = new Thread("serviceThread") {
 
 			@Override
 			public void run() {

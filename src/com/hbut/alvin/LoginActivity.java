@@ -4,14 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-
-
-
 import com.hbut.util.HtmlParser;
 import com.hbut.util.PersonInf;
 import com.hbut.util.XmlReader;
 import com.hbut.alvin.R;
-
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +21,7 @@ import android.widget.Toast;
 
 public class LoginActivity extends DownLoadActivity {
 
+
 	PersonInf pi;
 	String pwd;
 	String id;
@@ -33,9 +30,12 @@ public class LoginActivity extends DownLoadActivity {
 	final static int CHECK = 1;
 	final static int SERVERERROR = 2;
 	final static int DATAERROR = 3;
+	final static int CONNECTERROR = 4;
 	HbutApp myApp;
 	boolean hasPiFile = false;
 	Handler handler;
+	Thread loginThread;
+	boolean isRunning = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class LoginActivity extends DownLoadActivity {
 		idFld = (EditText) findViewById(R.id.idFld);
 		pwdFld = (EditText) findViewById(R.id.pswFld);
 		myApp = (HbutApp) getApplicationContext();
+		loginThread = getNewThread();
+
 		handler = new Handler() {
 
 			@Override
@@ -54,7 +56,7 @@ public class LoginActivity extends DownLoadActivity {
 				case CHECK:
 					myApp.setClsDownloadEnd(false);
 					Toast.makeText(LoginActivity.this, "验证信息...",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 					if (pi == null) {
 						Toast.makeText(LoginActivity.this, "帐号,密码错误!",
 								Toast.LENGTH_SHORT).show();
@@ -70,8 +72,9 @@ public class LoginActivity extends DownLoadActivity {
 								EnteringActivity.class);
 						intent.putExtras(myBundle);
 						startActivity(intent);
-						
-						Intent serviceIntent = new Intent(LoginActivity.this,ClsService.class);
+
+						Intent serviceIntent = new Intent(LoginActivity.this,
+								ClsService.class);
 						startService(serviceIntent);
 					} else {
 						Toast.makeText(LoginActivity.this, "密码错误!!!",
@@ -85,7 +88,11 @@ public class LoginActivity extends DownLoadActivity {
 					break;
 				case DATAERROR:
 					Toast.makeText(LoginActivity.this, "数据获取解析失败",
-							Toast.LENGTH_SHORT);
+							Toast.LENGTH_SHORT).show();
+					break;
+				case CONNECTERROR:
+					Toast.makeText(LoginActivity.this, "无网络连接",
+							Toast.LENGTH_SHORT).show();
 					break;
 				}
 
@@ -115,49 +122,78 @@ public class LoginActivity extends DownLoadActivity {
 		}
 
 		hasPiFile = hasFile(id);
-		new Thread() {
-			public void run() {
-
-				if (hasPiFile) {
-					try {
-						Log.v("file", String.valueOf(hasPiFile));
-						InputStream inputStream = openFileInput(id + ".xml");
-						pi = XmlReader.pIXmlParser(inputStream);
-						handler.sendMessage(handler.obtainMessage(CHECK));
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						handler.sendMessage(handler.obtainMessage(DATAERROR));
-					}
-
-				} else {
-					String doc = getPsInfoFileByID(id);
-
-					if(doc == null){
-						handler.sendMessage(handler.obtainMessage(SERVERERROR));
-						return ;
-					}
-					pi = HtmlParser.parserPsInfo(doc);
-					if (pi == null) {	
-						handler.sendMessage(handler.obtainMessage(DATAERROR));
-						return;
-					} else {
-						String sbjCountDoc = getSbjCountFileByID(id);
-						int sbjCount= HtmlParser.parserSbjCount(sbjCountDoc);
-						pi.setSbjCount(sbjCount);
-						pi.setID(id);
-						handler.sendMessage(handler.obtainMessage(CHECK));
-					}
-				}
-
-			}
-
-		}.start();
+		loginThread = getNewThread();
+		loginThread.start();
 
 	}
 
+	public Thread getNewThread(){
+		return new Thread("loginThread") {
+			public void run() {
+				while (isRunning) {
+					if (hasPiFile) {
+						try {
+							Log.v("file", String.valueOf(hasPiFile));
+							InputStream inputStream = openFileInput(id + ".xml");
+							pi = XmlReader.pIXmlParser(inputStream);
+							handler.sendMessage(handler.obtainMessage(CHECK));
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							handler.sendMessage(handler
+									.obtainMessage(DATAERROR));
+						}
+
+					} else {
+
+						if (hasNetWork() == false) {
+							handler.sendMessage(handler
+									.obtainMessage(CONNECTERROR));
+							return;
+						}
+						String doc = getPsInfoFileByID(id);
+
+						if (doc == null) {
+							handler.sendMessage(handler
+									.obtainMessage(SERVERERROR));
+							return;
+						}
+						pi = HtmlParser.parserPsInfo(doc);
+						if (pi == null) {
+							handler.sendMessage(handler
+									.obtainMessage(DATAERROR));
+							return;
+						} else {
+							String sbjCountDoc = getSbjCountFileByID(id);
+							int sbjCount = HtmlParser
+									.parserSbjCount(sbjCountDoc);
+							pi.setSbjCount(sbjCount);
+							pi.setID(id);
+							handler.sendMessage(handler.obtainMessage(CHECK));
+						}
+					}
+					isRunning = false;
+				}
+				
+			}
+
+		};
+	}
 	public void onExitClicked(View exitBtn) {
 		LoginActivity.this.finish();
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		isRunning = true;
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
 	}
 
 	public boolean hasFile(String id) {
