@@ -11,6 +11,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.util.Log;
+
 
 public class XmlReader {
 
@@ -181,7 +183,7 @@ public class XmlReader {
 				case XmlPullParser.START_TAG:
 					tagName = xmlPullParser.getName();
 					if (tagName.equalsIgnoreCase(XmlTag.sbj)) {
-						key = xmlPullParser.getAttributeName(0);
+						key = xmlPullParser.getAttributeValue(0);
 						clsStuSbjList = new ArrayList<ClsStuSbj>();
 					} else if (tagName.equalsIgnoreCase(XmlTag.stu)) {
 						clsStuSbj = new ClsStuSbj();
@@ -206,10 +208,12 @@ public class XmlReader {
 			return clsMap;
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
+			Log.v("xmlRead", e.getLocalizedMessage());
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
 			// TODO: handle exception
+			Log.v("xmlRead", e.getLocalizedMessage());
 			e.printStackTrace();
 			return null;
 		}

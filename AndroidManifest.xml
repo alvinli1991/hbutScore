@@ -35,6 +35,9 @@
             android:name=".UpdateActivity"
             android:theme="@style/transparent" >
         </activity>
+        <activity android:name=".ClassShowActivity" >
+        </activity>
+        <service android:name=".ClsService"></service>
     </application>
 
 </manifest>

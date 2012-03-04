@@ -45,7 +45,6 @@ public class LoginActivity extends DownLoadActivity {
 		idFld = (EditText) findViewById(R.id.idFld);
 		pwdFld = (EditText) findViewById(R.id.pswFld);
 		myApp = (HbutApp) getApplicationContext();
-
 		handler = new Handler() {
 
 			@Override
@@ -53,6 +52,7 @@ public class LoginActivity extends DownLoadActivity {
 				// TODO Auto-generated method stub
 				switch (msg.what) {
 				case CHECK:
+					myApp.setClsDownloadEnd(false);
 					Toast.makeText(LoginActivity.this, "验证信息...",
 							Toast.LENGTH_LONG).show();
 					if (pi == null) {
