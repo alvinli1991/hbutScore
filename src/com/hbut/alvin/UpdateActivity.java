@@ -34,7 +34,7 @@ public class UpdateActivity extends DownLoadActivity implements ViewFactory{
 	protected static final int SAMENUM = 6;
 	protected static final int FINISH =7;
 	final static int CONNECTERROR = 8;
-	
+	final static int WAIT=9;
 	ProgressBar circle ;
 	TextView noticeText;
 	TextSwitcher stateText;
@@ -89,6 +89,10 @@ public class UpdateActivity extends DownLoadActivity implements ViewFactory{
 					Toast.makeText(getApplicationContext(), "无网络连接", Toast.LENGTH_LONG).show();
 					finish();
 					break;
+				case WAIT:
+					Toast.makeText(getApplicationContext(), "此次数据还未处理完，不要激动!!", Toast.LENGTH_LONG).show();
+					finish();
+					break;
 				case NEXT:
 					finish();
 					break;
@@ -100,8 +104,14 @@ public class UpdateActivity extends DownLoadActivity implements ViewFactory{
 
 			@Override
 			public void run() {
+				    //check network
 					if(hasNetWork()==false){
 						handler.sendMessage(handler.obtainMessage(CONNECTERROR));
+						return;
+					}
+					//check process state
+					if(myapp.isClsDownloadEnd == false){
+						handler.sendMessage(handler.obtainMessage(WAIT));
 						return;
 					}
 					//get count
@@ -188,8 +198,8 @@ public class UpdateActivity extends DownLoadActivity implements ViewFactory{
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
+		// TODO Auto-generated method stub	
+			super.onStop();
 	}
 
 

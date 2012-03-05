@@ -198,7 +198,7 @@ public class EnteringActivity extends DownLoadActivity {
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
-		super.onStop();
+			super.onStop();
 	}
 
 

@@ -111,7 +111,10 @@ public class ShowActivity extends ListActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		List<Map<String, Object>> oldListData = listData;
 		listData = buildListData();
+		if(oldListData.equals(listData))
+			return;
 		showListView.setAdapter(new RowAdapter(this, listData, R.layout.prow,
 				items, itemsID));
 	}
