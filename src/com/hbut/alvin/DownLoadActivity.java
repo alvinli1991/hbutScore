@@ -45,6 +45,8 @@ public class DownLoadActivity extends Activity {
 		String text = null;
 		try {
 			HttpResponse response = httpClient.execute(httpget);
+			if(response.getStatusLine().getStatusCode() != 200)
+				return null;
 			HttpEntity entity = response.getEntity();
 
 			InputStreamReader isr = null;
@@ -87,6 +89,8 @@ public class DownLoadActivity extends Activity {
 		String text = null;
 		try {
 			HttpResponse response = httpClient.execute(httpget);
+			if(response.getStatusLine().getStatusCode() != 200)
+				return null;
 			HttpEntity entity = response.getEntity();
 
 			InputStreamReader isr = null;
@@ -131,6 +135,8 @@ public class DownLoadActivity extends Activity {
 		HttpResponse response;
 		try {
 			response = httpClient.execute(httpget);
+			if(response.getStatusLine().getStatusCode() != 200)
+				return null;
 			HttpEntity entity = response.getEntity();
 			InputStreamReader isr = null;
 			BufferedReader br = null;
@@ -175,6 +181,8 @@ public class DownLoadActivity extends Activity {
 		HttpResponse response;
 		try {
 			response = httpClient.execute(httpget);
+			if(response.getStatusLine().getStatusCode() != 200)
+				return null;
 			HttpEntity entity = response.getEntity();
 			InputStreamReader isr = null;
 			BufferedReader br = null;

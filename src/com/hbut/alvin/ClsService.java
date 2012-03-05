@@ -238,6 +238,8 @@ public class ClsService extends Service {
 		try {
 			Log.v("download", "begin");
 			response = httpClient.execute(httpget);
+			if(response.getStatusLine().getStatusCode() != 200)
+				return null;
 			HttpEntity entity = response.getEntity();
 			InputStreamReader isr = null;
 			BufferedReader br = null;
