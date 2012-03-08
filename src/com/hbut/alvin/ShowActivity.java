@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,8 +29,10 @@ import android.widget.Toast;
 
 public class ShowActivity extends ListActivity {
 
+
 	final static int SERVICENOTDONE = 1;
 	final static int NOTSBJERROR = 2;
+	public static final int MENU_ABOUT = Menu.FIRST+1;
 	ImageButton outBtn;
 	ImageButton updateBtn;
 	TextView infText;
@@ -40,6 +44,25 @@ public class ShowActivity extends ListActivity {
 	int[] itemsID = { R.id.sbjName, R.id.sbjNote, R.id.pGrade, R.id.grdlevel };
 	Handler handler;
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		menu.add(Menu.NONE,MENU_ABOUT,Menu.NONE,"¹ØÓÚ");
+		//.setIcon()
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case MENU_ABOUT:
+			Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+			startActivity(intent);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

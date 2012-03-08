@@ -30,7 +30,10 @@ import com.hbut.util.XmlReader;
 import com.hbut.util.XmlWriter;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -84,7 +87,9 @@ public class ClsService extends Service {
 						Toast.LENGTH_SHORT).show();
 				break;
 			case END:
-				Log.v("service", "end");
+				Log.v("clsservice", "end");
+				Intent intent = new Intent(ClsService.this, VersionCheckService.class);
+				startService(intent);
 				stopSelf(StartMsg.arg1);
 				break;
 			case FINISH:
@@ -113,7 +118,7 @@ public class ClsService extends Service {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		HandlerThread thread = new HandlerThread("ServiceThread",
+		HandlerThread thread = new HandlerThread("clsServiceThread",
 				Process.THREAD_PRIORITY_BACKGROUND);
 		thread.start();
 		myapp = (HbutApp) getApplicationContext();
@@ -123,11 +128,10 @@ public class ClsService extends Service {
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
 
-		downloadThread = new Thread("serviceThread") {
+		downloadThread = new Thread("clsDownloadThread") {
 
 			@Override
 			public void run() {
-
 				if (hasClsFile) {
 					InputStream inputStream;
 					try {
@@ -142,6 +146,11 @@ public class ClsService extends Service {
 					}
 
 				} else {
+					if (hasNetWork() == false) {
+						mServiceHandler.sendMessage(mServiceHandler
+								.obtainMessage(CONNECTERROR));
+						return;
+					}
 					// download
 					String clsGradeDoc = getClsGradeFileByName(myapp.getPsi()
 							.getCls());
@@ -223,6 +232,14 @@ public class ClsService extends Service {
 		return null;
 	}
 
+	public boolean hasNetWork(){
+		ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo net = conMgr.getActiveNetworkInfo();
+		if(net == null)
+			return false;
+		else
+			return true;
+	}
 	public String getClsGradeFileByName(String clsName) {
 
 		HttpParams httpParams = new BasicHttpParams();
