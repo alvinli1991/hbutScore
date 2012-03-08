@@ -78,25 +78,11 @@ public class HtmlParser {
 		}
 
 		pi.setPwd(result[0].split(">")[1].split("<")[0]);
-		// m = Pattern.compile("(\\d)+").matcher(result[0]);
-		// if (m.find())
-		// pi.setPwd(m.group());
-		// else
-		// return null;
 
 		pi.setCls(result[1].split(">")[1].split("<")[0]);
-		// m = Pattern.compile("(\\d)+(.)+[^(</TD>)]").matcher(result[1]);
-		// if (m.find())
-		// pi.setCls(m.group());
-		// else
-		// return null;
+
 		pi.setName(result[2].split(">")[1].split("<")[0]);
-		// m =
-		// Pattern.compile("[^(<TD Nowrap >)](.)+[^(</TD>)]").matcher(result[2]);
-		// if (m.find())
-		// pi.setName(m.group());
-		// else
-		// return null;
+
 
 		return pi;
 	}

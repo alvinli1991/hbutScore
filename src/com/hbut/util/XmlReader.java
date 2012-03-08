@@ -13,7 +13,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.util.Log;
 
-
 public class XmlReader {
 
 	public static PersonInf pIXmlParser(InputStream inStream) {
@@ -50,8 +49,10 @@ public class XmlReader {
 							else if (xmlPullParser.getAttributeName(i)
 									.equalsIgnoreCase(XmlTag.cls))
 								pi.setCls(xmlPullParser.getAttributeValue(i));
-							else if(xmlPullParser.getAttributeName(i).equalsIgnoreCase(XmlTag.count))
-								pi.setSbjCount(Integer.parseInt(xmlPullParser.getAttributeValue(i)));
+							else if (xmlPullParser.getAttributeName(i)
+									.equalsIgnoreCase(XmlTag.count))
+								pi.setSbjCount(Integer.parseInt(xmlPullParser
+										.getAttributeValue(i)));
 						}
 					}
 					isEnd = true;
@@ -214,6 +215,58 @@ public class XmlReader {
 		} catch (IOException e) {
 			// TODO: handle exception
 			Log.v("xmlRead", e.getLocalizedMessage());
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	public static VersionInf paserVersionXml(InputStream inStream) {
+		VersionInf vi = null;
+		XmlPullParserFactory pullFactory;
+		boolean isEnd = false;
+		try {
+			pullFactory = XmlPullParserFactory.newInstance();
+			XmlPullParser xmlPullParser = pullFactory.newPullParser();
+			// begin parser
+			xmlPullParser.setInput(inStream, "GBK");
+			int eventType = xmlPullParser.getEventType();
+			String tagName = null;
+			while (eventType != XmlPullParser.END_DOCUMENT && isEnd == false) {
+				switch (eventType) {
+				case XmlPullParser.START_DOCUMENT:
+					vi = new VersionInf();
+					break;
+				case XmlPullParser.START_TAG:
+					tagName = xmlPullParser.getName();
+					if (tagName.equalsIgnoreCase(XmlTag.version))
+						vi.setVersion(xmlPullParser.nextText());
+					else if (tagName.equalsIgnoreCase(XmlTag.year))
+						vi.setYear(Integer.parseInt(xmlPullParser.nextText()));
+					else if (tagName.equalsIgnoreCase(XmlTag.month))
+						vi.setMonth(Integer.parseInt(xmlPullParser.nextText()));
+					else if (tagName.equalsIgnoreCase(XmlTag.day))
+						vi.setDay(Integer.parseInt(xmlPullParser.nextText()));
+					else if (tagName.equalsIgnoreCase(XmlTag.note))
+						vi.setNote(xmlPullParser.nextText());
+					else if(tagName.equalsIgnoreCase(XmlTag.allow))
+						vi.setAllow(xmlPullParser.nextText().trim());
+						break;
+				case XmlPullParser.END_TAG:
+					tagName = xmlPullParser.getName();
+					if (tagName.equalsIgnoreCase(XmlTag.app))
+						isEnd = true;
+					break;
+				}
+				eventType = xmlPullParser.next();
+			}
+			return vi;
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

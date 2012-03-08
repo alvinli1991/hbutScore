@@ -2,6 +2,7 @@ package com.hbut.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.util.Log;
 
 public class XmlWriter {
 
@@ -21,6 +24,115 @@ public class XmlWriter {
 			return true;
 		else
 			return false;
+	}
+
+	public static String writeFirstVersionXml(String versionID) {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = 0;
+		int day = 1;
+		StringWriter xmlWriter = new StringWriter();
+		String nmsp = "";
+		try {
+			// create xml parser
+			XmlPullParserFactory pullFactory = XmlPullParserFactory
+					.newInstance();
+			XmlSerializer xmlSerializer = pullFactory.newSerializer();
+			// bind
+			xmlSerializer.setOutput(xmlWriter);
+			// <>
+			xmlSerializer.startDocument("UTF-8", true);
+			// <app>
+			xmlSerializer.startTag(nmsp, XmlTag.app);
+			// <version></version>
+			xmlSerializer.startTag(nmsp, XmlTag.version);
+			xmlSerializer.text(versionID);
+			xmlSerializer.endTag(nmsp, XmlTag.version);
+			// <allow></allow>
+			xmlSerializer.startTag(nmsp, XmlTag.allow);
+			xmlSerializer.text("true");
+			xmlSerializer.endTag(nmsp, XmlTag.allow);
+			// <year></year>
+			xmlSerializer.startTag(nmsp, XmlTag.year);
+			xmlSerializer.text(Integer.toString(year));
+			xmlSerializer.endTag(nmsp, XmlTag.year);
+			// <month></month>
+			xmlSerializer.startTag(nmsp, XmlTag.month);
+			xmlSerializer.text(Integer.toString(month));
+			xmlSerializer.endTag(nmsp, XmlTag.month);
+			// <day></day>
+			xmlSerializer.startTag(nmsp, XmlTag.day);
+			xmlSerializer.text(Integer.toString(day));
+			xmlSerializer.endTag(nmsp, XmlTag.day);
+			// <note></note>
+			xmlSerializer.startTag(nmsp, XmlTag.note);
+			xmlSerializer.text("");
+			xmlSerializer.endTag(nmsp, XmlTag.note);
+			// </app>
+			xmlSerializer.endTag(nmsp, XmlTag.app);
+			// <>
+			xmlSerializer.endDocument();
+			return xmlWriter.toString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
+
+	public static String writeVersionXml(String versionID, String note,
+			String allow) {
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		StringWriter xmlWriter = new StringWriter();
+		String nmsp = "";
+		try {
+			// create xml parser
+			XmlPullParserFactory pullFactory = XmlPullParserFactory
+					.newInstance();
+			XmlSerializer xmlSerializer = pullFactory.newSerializer();
+			// bind
+			xmlSerializer.setOutput(xmlWriter);
+			// <>
+			xmlSerializer.startDocument("UTF-8", true);
+			// <app>
+			xmlSerializer.startTag(nmsp, XmlTag.app);
+			// <version></version>
+			xmlSerializer.startTag(nmsp, XmlTag.version);
+			xmlSerializer.text(versionID);
+			xmlSerializer.endTag(nmsp, XmlTag.version);
+			// <allow></allow>
+			xmlSerializer.startTag(nmsp, XmlTag.allow);
+			xmlSerializer.text(allow);
+			xmlSerializer.endTag(nmsp, XmlTag.allow);
+			// <year></year>
+			xmlSerializer.startTag(nmsp, XmlTag.year);
+			xmlSerializer.text(Integer.toString(year));
+			xmlSerializer.endTag(nmsp, XmlTag.year);
+			// <month></month>
+			xmlSerializer.startTag(nmsp, XmlTag.month);
+			xmlSerializer.text(Integer.toString(month));
+			xmlSerializer.endTag(nmsp, XmlTag.month);
+			// <day></day>
+			xmlSerializer.startTag(nmsp, XmlTag.day);
+			xmlSerializer.text(Integer.toString(day));
+			xmlSerializer.endTag(nmsp, XmlTag.day);
+			// <note></note>
+			xmlSerializer.startTag(nmsp, XmlTag.note);
+			xmlSerializer.text(note);
+			xmlSerializer.endTag(nmsp, XmlTag.note);
+			// </app>
+			xmlSerializer.endTag(nmsp, XmlTag.app);
+			// <>
+			xmlSerializer.endDocument();
+			Log.v("xmlWriter", xmlWriter.toString());
+			return xmlWriter.toString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+
 	}
 
 	public static String writePGradeXml(List<PersonSbj> pList, PersonInf pi) {
@@ -36,13 +148,14 @@ public class XmlWriter {
 			xmlSerializer.setOutput(xmlWriter);
 			// <>
 			xmlSerializer.startDocument("GBK", true);
-			//<student id="" name="" pwd="" cls="" count=""></student>
+			// <student id="" name="" pwd="" cls="" count=""></student>
 			xmlSerializer.startTag(nmsp, XmlTag.stu);
 			xmlSerializer.attribute(nmsp, XmlTag.id, pi.getID());
 			xmlSerializer.attribute(nmsp, XmlTag.name, pi.getName());
 			xmlSerializer.attribute(nmsp, XmlTag.pwd, pi.getPwd());
 			xmlSerializer.attribute(nmsp, XmlTag.cls, pi.getCls());
-			xmlSerializer.attribute(nmsp, XmlTag.count, Integer.toString(pi.getSbjCount()));
+			xmlSerializer.attribute(nmsp, XmlTag.count,
+					Integer.toString(pi.getSbjCount()));
 			for (PersonSbj n : pList) {
 				// <subject>
 				xmlSerializer.startTag(nmsp, XmlTag.sbj);

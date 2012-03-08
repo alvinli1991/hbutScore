@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/grdlevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dip"
+        android:contentDescription="@string/grdlevel"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/pGrade"
+        android:layout_width="40dip"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/grdlevel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dip"
+        android:gravity="center"
+        android:text="90" />
+
+    <LinearLayout
+        android:id="@+id/contentCtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/grdlevel"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/pGrade"
+        android:layout_toRightOf="@id/grdlevel"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sbjName"
+            android:layout_width="wrap_content"
+            android:layout_height="0px"
+            android:gravity="left"
+            android:layout_weight="70"
+            android:text="算法设计" />
+
+
+        <TextView
+            android:id="@+id/sbjNote"
+            android:layout_width="wrap_content"
+            android:layout_height="0px"
+            android:gravity="bottom"
+            android:layout_weight="30"
+            android:textSize="10dip"
+            android:text="babababababa" />
+    </LinearLayout>
+
+</RelativeLayout>

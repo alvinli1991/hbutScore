@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/enterBtnLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     >
+
+    <ImageButton
+        android:id="@+id/bkgBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/enterBtn"
+        android:layout_alignBottom="@+id/enterBtn"
+        android:background="#40000000" 
+        android:contentDescription="@string/bkgBtn"
+       android:onClick="onEnterClicked"
+        />
+    <Button
+        android:id="@id/enterBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/loginenter" 
+        android:onClick="onEnterClicked"
+       />
+   
+    <Button
+        android:id="@+id/enterContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/enterBtn"
+        android:textStyle="bold"
+        android:background="#00000000"
+        android:textColor="@color/white"
+        android:text="@string/enter"
+        android:textSize="30sp" 
+        android:onClick="onEnterClicked"
+        />
+</RelativeLayout>

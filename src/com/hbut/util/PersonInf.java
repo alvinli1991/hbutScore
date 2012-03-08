@@ -54,7 +54,7 @@ public class PersonInf {
 	private int sbjCount;
 	
 	public static boolean checkID(String id) {
-		Pattern p = Pattern.compile("^[a-zA-z0-9]+$");
+		Pattern p = Pattern.compile("^[a-zA-z0-9]{9,11}$");
 		Matcher m = p.matcher(id);
 		if (m.find())
 			return true;
@@ -63,7 +63,7 @@ public class PersonInf {
 	}
 
 	public static String getCidByID(String id) {
-		Pattern p = Pattern.compile("\\d{7}");
+		Pattern p = Pattern.compile("[a-zA-z0-9]{8}");
 		Matcher m = p.matcher(id);
 		if (m.find())
 			return m.group();

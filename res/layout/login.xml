@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bkg"
+    android:baselineAligned="false"
+    android:orientation="vertical" 
+   >
+    <LinearLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loginArea"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="50"
+        android:padding="10dip" >
+
+        <TextView
+            android:id="@+id/idText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id"
+            android:textColor="@color/white"
+            android:textSize="30sp" >
+        </TextView>
+
+        <AutoCompleteTextView
+            android:id="@+id/idFld"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idText"
+            android:hint="@string/idhint"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="11" >
+
+            <requestFocus />
+        </AutoCompleteTextView>
+
+        <TextView
+            android:id="@+id/pswText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idFld"
+            android:layout_marginTop="20dip"
+            android:text="@string/pwd"
+            android:textColor="@color/white"
+            android:textSize="30sp" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/pswFld"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pswText"
+            android:hint="@string/pwdhint"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword" >
+        </EditText>
+        <ImageButton 
+            android:id="@+id/permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pswFld"
+            android:background="@drawable/permission"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dip"
+            android:contentDescription="@string/permission"
+            android:onClick="onPermissionClicked"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="20" >
+
+        <com.hbut.alvin.EnterButton
+            android:id="@+id/myEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             >
+        </com.hbut.alvin.EnterButton>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="20" >
+
+        <TextView
+            android:id="@+id/room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_centerInParent="true"/>
+
+        <com.hbut.alvin.OutButton
+            android:id="@+id/myOuter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/room">
+        </com.hbut.alvin.OutButton>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, HbutScoreActivity!</string>
+    <string name="app_name">HbutScore</string>
+    <string name="welcome">Welcome</string>
+    <string name="id">学号</string>
+    <string name="pwd">密码</string>
+    <string name="enter">登录</string>
+    <string name="exit">退出</string>
+    <string name="idhint">请输入学号</string>
+    <string name="pwdhint">请输入密码</string>
+    <string name="flowImg">flowing image</string>
+    <string name="outBtn">back to home activity</string>
+    <string name="updateBtn">update button</string>
+    <string name="personBtn">the button represents the grade of person</string>
+    <string name="classBtn">the button represents the grade of class</string>
+    <string name="grdlevel">image represent the level of the grade</string>
+    <string name="backBtn">back to the head activity</string>
+    <string name="cls">clsName</string>
+    <string name="sbjRank">the ranking list of a subject</string>
+    <string name="notice">更新中，请不要离开此界面</string>
+    <string name="aboutBkg">about information</string>
+    <string name="bkgBtn">fake background</string>
+    <string name="permission">permission</string>
+
+</resources>

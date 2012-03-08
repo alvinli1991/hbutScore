@@ -12,4 +12,10 @@ public class XmlTag {
 	public static final String note = "note";
 	public static final String times = "times";
 	public static final String count = "count";
+	public static final String version = "version";
+	public static final String year = "year";
+	public static final String month = "month";
+	public static final String day = "day";
+	public static final String app = "app";
+	public static final String allow = "allow";
 }
