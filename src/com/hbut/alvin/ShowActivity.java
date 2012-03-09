@@ -159,9 +159,9 @@ public class ShowActivity extends ListActivity {
 			// if (n.getSbjLevel() == null) {
 			map.put("pGrade", Integer.toString(n.getSbjGrade()));
 			if (n.getSbjGrade() >= 90)
-				map.put("grdlevel", R.drawable.head);
+				map.put("grdlevel", R.drawable.test3);
 			else
-				map.put("grdlevel", R.drawable.android);
+				map.put("grdlevel", R.drawable.test3);
 			list.add(map);
 		}
 

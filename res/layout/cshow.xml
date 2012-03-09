@@ -15,15 +15,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_margin="5dip"
-            android:contentDescription="@string/backBtn" 
-            android:onClick="onBackCliked"/>
+            android:contentDescription="@string/backBtn"
+            android:onClick="onBackCliked" />
 
         <TextView
             android:id="@+id/clsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:ellipsize="marquee"
             android:gravity="center"
+            android:singleLine="true"
             android:text="@string/cls" />
     </RelativeLayout>
 

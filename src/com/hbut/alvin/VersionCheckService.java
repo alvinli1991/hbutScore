@@ -56,27 +56,30 @@ public class VersionCheckService extends Service {
 	Thread checkThread;
 	VersionInf localVi;
 	VersionInf remoteVi;
+	VersionInf newVi;
 	Notification notification;
 	NotificationManager mnofityMgr;
-	final static int UPDATE_ID=1;
+	HbutApp myapp ;
+	final static int UPDATE_ID = 1;
 	final static int END = 0;
 	final static int NOTIFY = 1;
-	final static int START = 2;	
+	final static int START = 2;
+
 	final class ServiceHandler extends Handler {
 
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			switch(msg.what){
+			switch (msg.what) {
 			case END:
 				Log.v("versionservice", "end");
 				stopSelf(StartMsg.arg1);
 				break;
 			case NOTIFY:
+				Log.v("notify", "trigger");
 				nofity();
-				mServiceHandler.sendMessage(mServiceHandler
-						.obtainMessage(END));
+				mServiceHandler.sendMessage(mServiceHandler.obtainMessage(END));
 				break;
 			case START:
 				Log.v("versionservice", "start");
@@ -92,37 +95,50 @@ public class VersionCheckService extends Service {
 
 	}
 
-	public void nofity(){
-		
-		notification = new Notification(R.drawable.status, "update", System.currentTimeMillis());
+	public void nofity() {
+
+		notification = new Notification(R.drawable.status, "update",
+				System.currentTimeMillis());
 		Context context = getApplicationContext();
-		Intent notificationIntent = new Intent(VersionCheckService.this, NotificationActivity.class);
-		//attach note and version
-		PendingIntent contentIntent = PendingIntent.getActivity(VersionCheckService.this, 0, notificationIntent, 0);
-		notification.setLatestEventInfo(VersionCheckService.this, "hbutscoreupdate", "a new version is coming", contentIntent);
+		Intent notificationIntent = new Intent(VersionCheckService.this,
+				NotificationActivity.class);
+		// attach note and version
+		notificationIntent.putExtra("version", newVi.getVersion());
+		myapp.setAppvi(newVi);
+		//notificationIntent.putExtra("note", newVi.getElement());	
+		//
+		PendingIntent contentIntent = PendingIntent.getActivity(
+				VersionCheckService.this, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(VersionCheckService.this, "hbutscore",
+				"a new version is coming", contentIntent);
 		mnofityMgr.notify(UPDATE_ID, notification);
 	}
+
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		myapp = (HbutApp) getApplicationContext();
+		newVi = new VersionInf();
 		HandlerThread thread = new HandlerThread("versionServiceThread",
 				Process.THREAD_PRIORITY_BACKGROUND);
 		thread.start();
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
 		mnofityMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		
+
 		checkThread = new Thread("checkThread") {
 			@Override
 			public void run() {
 				try {
 					if (hasNetWork() == false) {
+						mServiceHandler.sendMessage(mServiceHandler
+								.obtainMessage(END));
 						return;
 					}
 					PackageManager pm = getPackageManager();
 					PackageInfo pi = pm.getPackageInfo("com.hbut.alvin", 0);
-					String localVerison = pi.versionName;
+					String appVerison = pi.versionName;
 
 					if (hasFile()) {
 						InputStream inputStream;
@@ -130,64 +146,77 @@ public class VersionCheckService extends Service {
 						localVi = XmlReader.paserVersionXml(inputStream);
 
 						if (!localVi.getVersion()
-								.equalsIgnoreCase(localVerison)) {
+								.equalsIgnoreCase(appVerison)) {
 							// notify user
+							//newVi.setVersion(localVi.getVersion());
+							newVi=localVi;
+							//newVi.setElement(localVi.getElement());
 							mServiceHandler.sendMessage(mServiceHandler
 									.obtainMessage(NOTIFY));
 							return;
 						}
-						
+
 						Calendar now = Calendar.getInstance();
 						int nowDays = now.get(Calendar.DAY_OF_YEAR);
 						Calendar fileDate = Calendar.getInstance();
 						fileDate.set(localVi.getYear(), localVi.getMonth(),
 								localVi.getDay());
 						int oldDays = fileDate.get(Calendar.DAY_OF_YEAR);
-						if ((nowDays - oldDays) < 7){
+						if (localVi.getYear() == now.get(Calendar.YEAR)
+								&& (nowDays - oldDays) < 2) {
 							mServiceHandler.sendMessage(mServiceHandler
 									.obtainMessage(END));
 							return;
 						}
-							
+
 					}
-					//download
+					// download
 					String versionFile = getVersionFile();
 					if (versionFile == null)
 						return;
-					//paser
+					// paser
 					ByteArrayInputStream in = new ByteArrayInputStream(
 							versionFile.getBytes());
 					remoteVi = XmlReader.paserVersionXml(in);
-					//save
-					String newVersionXml = XmlWriter.writeVersionXml(remoteVi.getVersion(), remoteVi.getNote(),remoteVi.getAllow());
+					// save
+					String newVersionXml = XmlWriter.writeVersionXml(
+							remoteVi.getVersion(), remoteVi.getElement(),
+							remoteVi.getAllow());
 					Log.v("versionXML", newVersionXml);
 					OutputStream outStream;
 					outStream = openFileOutput("version.xml", MODE_PRIVATE);
 					OutputStreamWriter outStreamWriter = new OutputStreamWriter(
-							outStream, "GBK");
+							outStream, "UTF-8");
 					outStreamWriter.write(newVersionXml);
 					outStreamWriter.close();
 					outStream.close();
-					//compare
-					if (!localVerison.equalsIgnoreCase(remoteVi.getVersion())) {
+					// compare
+					if (!appVerison.equalsIgnoreCase(remoteVi.getVersion())) {
 						// notify user
+						//newVi.setVersion(remoteVi.getVersion());
+						
+						newVi = remoteVi;
+						//newVi.setElement(remoteVi.getElement());
 						mServiceHandler.sendMessage(mServiceHandler
 								.obtainMessage(NOTIFY));
 						return;
 					}
-					
+
 					mServiceHandler.sendMessage(mServiceHandler
 							.obtainMessage(END));
 				} catch (FileNotFoundException e) {
 					// TODO: handle exception
+					e.printStackTrace();
 					mServiceHandler.sendMessage(mServiceHandler
 							.obtainMessage(END));
 					return;
 				} catch (NameNotFoundException e) {
+					e.printStackTrace();
 					mServiceHandler.sendMessage(mServiceHandler
 							.obtainMessage(END));
 					return;
 				} catch (Exception e) {
+					e.printStackTrace();
 					mServiceHandler.sendMessage(mServiceHandler
 							.obtainMessage(END));
 					return;
@@ -196,9 +225,8 @@ public class VersionCheckService extends Service {
 			}
 
 		};
-		
-		mServiceHandler.sendMessage(mServiceHandler
-				.obtainMessage(START));
+
+		mServiceHandler.sendMessage(mServiceHandler.obtainMessage(START));
 	}
 
 	@Override
@@ -222,14 +250,16 @@ public class VersionCheckService extends Service {
 		return null;
 	}
 
-	public boolean hasNetWork(){
-		ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+	public boolean hasNetWork() {
+		ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo net = conMgr.getActiveNetworkInfo();
-		if(net == null)
+		if (net == null)
 			return false;
 		else
 			return true;
 	}
+
 	public String getVersionFile() {
 		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 4000);
@@ -282,7 +312,7 @@ public class VersionCheckService extends Service {
 				.getExternalStorageState())) {
 			String path = getApplicationContext().getFilesDir()
 					.getAbsolutePath();
-			File file = new File(path+"/"+"version.xml");
+			File file = new File(path + "/" + "version.xml");
 			if (file.exists())
 				return true;
 			else

@@ -46,7 +46,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" 
             android:drawSelectorOnTop="false"
-            android:paddingTop="3dip">
+            android:padding="3dip">
         </ListView>
     </LinearLayout>
 

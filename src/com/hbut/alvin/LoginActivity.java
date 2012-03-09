@@ -310,6 +310,7 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 					handler.sendMessage(handler.obtainMessage(PERMISSIONCHECK));
 					// download
 					String versionFile = getVersionFile();
+					Log.v("versionfile", versionFile);
 					if (versionFile == null)
 						return;
 					// paser
@@ -318,13 +319,13 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 					remoteVi = XmlReader.paserVersionXml(in);
 					// save
 					String newVersionXml = XmlWriter.writeVersionXml(
-							remoteVi.getVersion(), remoteVi.getNote(),
+							remoteVi.getVersion(), remoteVi.getElement(),
 							remoteVi.getAllow());
 					Log.v("versionXML", newVersionXml);
 					OutputStream outStream;
 					outStream = openFileOutput("version.xml", MODE_PRIVATE);
 					OutputStreamWriter outStreamWriter = new OutputStreamWriter(
-							outStream, "GBK");
+							outStream, "UTF-8");
 					outStreamWriter.write(newVersionXml);
 					outStreamWriter.close();
 					outStream.close();

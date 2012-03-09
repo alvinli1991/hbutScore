@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -21,6 +22,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 
 public class WelcomeActivity extends Activity {
@@ -56,7 +58,7 @@ public class WelcomeActivity extends Activity {
 						OutputStream outStream;
 						outStream = openFileOutput("version.xml", MODE_PRIVATE);
 						OutputStreamWriter outStreamWriter = new OutputStreamWriter(
-								outStream, "GBK");
+								outStream, "UTF-8");
 						outStreamWriter.write(versionXml);
 						outStreamWriter.close();
 						outStream.close();

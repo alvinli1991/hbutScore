@@ -18,4 +18,6 @@ public class XmlTag {
 	public static final String day = "day";
 	public static final String app = "app";
 	public static final String allow = "allow";
+	public static final String element = "element";
+
 }

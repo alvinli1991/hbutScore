@@ -3,32 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-        <ImageView
+    <ImageView
         android:id="@+id/sbjRank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dip"
         android:contentDescription="@string/sbjRank"
+        android:padding="5dip"
         android:src="@drawable/ic_launcher" />
 
-            <TextView
-                android:id="@+id/stuName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dip"
-                android:gravity="center"
-                android:text="Alvin" />
+    <TextView
+        android:id="@+id/stuName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dip"
+        android:gravity="center"
+        android:text="Alvin" />
 
-            <TextView
-                android:id="@+id/stuGrade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dip"
-                android:text="TextView" />
+    <TextView
+        android:id="@+id/stuGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        android:text="TextView" />
 
 </RelativeLayout>

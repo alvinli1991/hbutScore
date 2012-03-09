@@ -224,12 +224,14 @@ public class XmlReader {
 	public static VersionInf paserVersionXml(InputStream inStream) {
 		VersionInf vi = null;
 		XmlPullParserFactory pullFactory;
+		List<String> eleList = new ArrayList<String>();
+		String[] temp = null;
 		boolean isEnd = false;
 		try {
 			pullFactory = XmlPullParserFactory.newInstance();
 			XmlPullParser xmlPullParser = pullFactory.newPullParser();
 			// begin parser
-			xmlPullParser.setInput(inStream, "GBK");
+			xmlPullParser.setInput(inStream, "UTF-8");
 			int eventType = xmlPullParser.getEventType();
 			String tagName = null;
 			while (eventType != XmlPullParser.END_DOCUMENT && isEnd == false) {
@@ -247,15 +249,22 @@ public class XmlReader {
 						vi.setMonth(Integer.parseInt(xmlPullParser.nextText()));
 					else if (tagName.equalsIgnoreCase(XmlTag.day))
 						vi.setDay(Integer.parseInt(xmlPullParser.nextText()));
-					else if (tagName.equalsIgnoreCase(XmlTag.note))
-						vi.setNote(xmlPullParser.nextText());
-					else if(tagName.equalsIgnoreCase(XmlTag.allow))
+					else if (tagName.equalsIgnoreCase(XmlTag.element))
+						eleList.add(xmlPullParser.nextText());
+					else if (tagName.equalsIgnoreCase(XmlTag.allow))
 						vi.setAllow(xmlPullParser.nextText().trim());
-						break;
+					break;
 				case XmlPullParser.END_TAG:
-					tagName = xmlPullParser.getName();
-					if (tagName.equalsIgnoreCase(XmlTag.app))
+					tagName = xmlPullParser.getName();	
+					if (tagName.equalsIgnoreCase(XmlTag.app)) {
+						temp = new String[eleList.size()];
+						for (int i = 0; i < eleList.size(); i++) {
+							temp[i] = eleList.get(i);
+						}
+						vi.setElement(temp);
 						isEnd = true;
+					}
+
 					break;
 				}
 				eventType = xmlPullParser.next();

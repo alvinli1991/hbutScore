@@ -64,10 +64,12 @@ public class XmlWriter {
 			xmlSerializer.startTag(nmsp, XmlTag.day);
 			xmlSerializer.text(Integer.toString(day));
 			xmlSerializer.endTag(nmsp, XmlTag.day);
-			// <note></note>
-			xmlSerializer.startTag(nmsp, XmlTag.note);
-			xmlSerializer.text("");
-			xmlSerializer.endTag(nmsp, XmlTag.note);
+//			// <note>
+//			xmlSerializer.startTag(nmsp, XmlTag.note);
+//			//<element></element>
+//			element
+//			//</note>
+//			xmlSerializer.endTag(nmsp, XmlTag.note);
 			// </app>
 			xmlSerializer.endTag(nmsp, XmlTag.app);
 			// <>
@@ -79,7 +81,7 @@ public class XmlWriter {
 		}
 	}
 
-	public static String writeVersionXml(String versionID, String note,
+	public static String writeVersionXml(String versionID, String[] element,
 			String allow) {
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
@@ -118,11 +120,17 @@ public class XmlWriter {
 			xmlSerializer.startTag(nmsp, XmlTag.day);
 			xmlSerializer.text(Integer.toString(day));
 			xmlSerializer.endTag(nmsp, XmlTag.day);
-			// <note></note>
+			// <note>
 			xmlSerializer.startTag(nmsp, XmlTag.note);
-			xmlSerializer.text(note);
+			//<element></element>
+			for (int i = 0; i < element.length; i++) {
+				xmlSerializer.startTag(nmsp, XmlTag.element);
+				xmlSerializer.text(element[i]);
+				xmlSerializer.endTag(nmsp, XmlTag.element);
+			}
+			//</note>
 			xmlSerializer.endTag(nmsp, XmlTag.note);
-			// </app>
+			//</app>
 			xmlSerializer.endTag(nmsp, XmlTag.app);
 			// <>
 			xmlSerializer.endDocument();

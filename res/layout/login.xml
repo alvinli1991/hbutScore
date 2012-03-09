@@ -4,21 +4,22 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_bkg"
     android:baselineAligned="false"
-    android:orientation="vertical" 
-   >
+    android:orientation="vertical" >
+
     <LinearLayout
         android:id="@+id/empty"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="10" >
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/loginArea"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="50"
-        android:padding="10dip" >
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip" >
 
         <TextView
             android:id="@+id/idText"
@@ -62,49 +63,47 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword" >
         </EditText>
-        <ImageButton 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="20" >
+
+        <ImageButton
             android:id="@+id/permission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pswFld"
+            android:layout_marginTop="5dip"
             android:background="@drawable/permission"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dip"
             android:contentDescription="@string/permission"
-            android:onClick="onPermissionClicked"/>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="20" >
+            android:layout_centerInParent="true"
+            android:onClick="onPermissionClicked" />
 
         <com.hbut.alvin.EnterButton
             android:id="@+id/myEnter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             >
+            android:layout_height="wrap_content" >
         </com.hbut.alvin.EnterButton>
-    </LinearLayout>
-
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="20" >
 
         <TextView
             android:id="@+id/room"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:layout_centerInParent="true"/>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <com.hbut.alvin.OutButton
             android:id="@+id/myOuter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignRight="@+id/room">
+            android:layout_alignRight="@+id/room" >
         </com.hbut.alvin.OutButton>
     </RelativeLayout>
 

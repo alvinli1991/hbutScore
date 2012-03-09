@@ -6,11 +6,20 @@ import java.util.Map;
 import com.hbut.util.ClsStuSbj;
 import com.hbut.util.PersonInf;
 import com.hbut.util.PersonSbj;
+import com.hbut.util.VersionInf;
 
 import android.app.Application;
 
 public class HbutApp extends Application {
 
+
+	public VersionInf getAppvi() {
+		return appvi;
+	}
+
+	public void setAppvi(VersionInf appvi) {
+		this.appvi = appvi;
+	}
 
 	public boolean isClsDownloadEnd() {
 		return isClsDownloadEnd;
@@ -48,4 +57,5 @@ public class HbutApp extends Application {
 	private PersonInf psi;
 	private Map<String,List<ClsStuSbj>> clsSbj;
 	boolean isClsDownloadEnd = false;
+	VersionInf appvi;
 }

@@ -1,6 +1,12 @@
 package com.hbut.util;
 
 public class VersionInf {
+	public String[] getElement() {
+		return element;
+	}
+	public void setElement(String[] element) {
+		this.element = element;
+	}
 	public String getAllow() {
 		return allow;
 	}
@@ -32,17 +38,11 @@ public class VersionInf {
 		this.version = version;
 	}
 
-	public String getNote() {
-		return note;
-	}
-	public void setNote(String note) {
-		this.note = note;
-	}
 	String version;
 	int year;
 	int month;
 	int day;
-	String note;
 	String allow;
+	String[] element; 
 	
 }
