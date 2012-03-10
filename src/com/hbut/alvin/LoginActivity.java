@@ -428,16 +428,16 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 		int id = v.getId();
 		if (id == R.id.enterBtn | id == R.id.enterContent | id == R.id.bkgBtn) {
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				// enterBtn.setBackgroundResource(R.drawable.glowloginenter);
+				enterBtn.setBackgroundResource(R.drawable.enter_glow_ic);
 			} else if (event.getAction() == MotionEvent.ACTION_UP) {
-				enterBtn.setBackgroundResource(R.drawable.loginenter);
+				enterBtn.setBackgroundResource(R.drawable.enter_ic);
 			}
 		}
 		if (id == R.id.outBtn | id == R.id.outContent | id == R.id.bkgBtn1) {
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				// enterBtn.setBackgroundResource(R.drawable.glowloginenter);
+				outBtn.setBackgroundResource(R.drawable.back_glow_ic);
 			} else if (event.getAction() == MotionEvent.ACTION_UP) {
-				enterBtn.setBackgroundResource(R.drawable.loginback);
+				outBtn.setBackgroundResource(R.drawable.back_ic);
 			}
 		}
 		return false;

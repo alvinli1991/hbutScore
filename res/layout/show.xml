@@ -2,21 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/show_bkg">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="10" >
+        android:layout_weight="10" 
+        android:background="@drawable/show_head">
 
         <ImageButton
             android:id="@+id/outBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_margin="5dip"
             android:onClick="onOutClicked"
-            android:contentDescription="@string/outBtn" />
+            android:contentDescription="@string/outBtn"
+            android:src="@drawable/back_glow_ic"
+            android:padding="10dip"
+            android:background="#00000000"
+             />
 
         <TextView
             android:id="@+id/inf"
@@ -24,6 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:textSize="25sp"
+            android:ellipsize="marquee"
+            android:textColor="#ffffffff"
             android:text="@string/welcome" />
 
         <ImageButton
@@ -31,9 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="5dip"
             android:onClick="onUpdateClicked"
-            android:contentDescription="@string/updateBtn" />
+            android:contentDescription="@string/updateBtn"
+            android:src="@drawable/update_ic"
+            android:padding="10dip"
+            android:background="#00000000"/>
     </RelativeLayout>
 
     <LinearLayout

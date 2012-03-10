@@ -13,8 +13,8 @@
 
     <application
         android:name=".HbutApp"
-        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@drawable/logo_ic"
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name=".WelcomeActivity"

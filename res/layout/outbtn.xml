@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/outContent"
-        android:background="@drawable/loginback" 
-        android:onClick="onExitClicked"/>
+        android:onClick="onExitClicked"
+        android:background="@drawable/back_ic"/>
 
 </RelativeLayout>

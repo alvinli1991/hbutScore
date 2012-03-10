@@ -75,10 +75,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
-            android:background="@drawable/permission"
             android:contentDescription="@string/permission"
             android:layout_centerInParent="true"
-            android:onClick="onPermissionClicked" />
+            android:onClick="onPermissionClicked" 
+            android:src="@drawable/unlock_ic"
+            android:background="#00000000"/>
 
         <com.hbut.alvin.EnterButton
             android:id="@+id/myEnter"

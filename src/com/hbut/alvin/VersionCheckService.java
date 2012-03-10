@@ -97,7 +97,7 @@ public class VersionCheckService extends Service {
 
 	public void nofity() {
 
-		notification = new Notification(R.drawable.status, "update",
+		notification = new Notification(R.drawable.logo_ic, "update",
 				System.currentTimeMillis());
 		Context context = getApplicationContext();
 		Intent notificationIntent = new Intent(VersionCheckService.this,

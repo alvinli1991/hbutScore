@@ -91,11 +91,24 @@ public class ClassShowActivity extends ListActivity {
 	private List<Map<String,Object>> buildCListData(){
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String,Object> map = null;
+		int count = 0;
 		for(ClsStuSbj n :stuSbjList){
 			map = new HashMap<String, Object>();
-			map.put("sbjRank", R.drawable.head1);
 			map.put("stuName", n.getStuName());
 			map.put("stuGrade",Integer.toString(n.getStuGrade()));
+			if(count == 0){
+				map.put("sbjRank", R.drawable.rank1_ic);
+				count ++;
+			}else if(count == 1){
+				map.put("sbjRank", R.drawable.rank2_ic);
+				count ++;
+			}else if (count == 2){
+				map.put("sbjRank", R.drawable.rank3_ic);
+				count ++;
+			}else{
+				map.put("sbjRank", R.drawable.rankother_ic);
+			}
+			
 			list.add(map);
 		}
 		return list;

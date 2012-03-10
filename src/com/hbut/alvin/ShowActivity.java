@@ -47,8 +47,8 @@ public class ShowActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		menu.add(Menu.NONE,MENU_ABOUT,Menu.NONE,"关于");
-		//.setIcon()
+		menu.add(Menu.NONE,MENU_ABOUT,Menu.NONE,"关于")
+		.setIcon(R.drawable.about_ic);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -158,10 +158,17 @@ public class ShowActivity extends ListActivity {
 			map.put("sbjNote", n.getSbjID() + "_" + n.getSbjNote());
 			// if (n.getSbjLevel() == null) {
 			map.put("pGrade", Integer.toString(n.getSbjGrade()));
-			if (n.getSbjGrade() >= 90)
-				map.put("grdlevel", R.drawable.test3);
-			else
-				map.put("grdlevel", R.drawable.test3);
+			int sbjGrade = n.getSbjGrade();
+			if (sbjGrade >= 90)
+				map.put("grdlevel", R.drawable.grade5_ic);
+			else if(sbjGrade < 90 && sbjGrade>=80)
+				map.put("grdlevel", R.drawable.grade4_ic);
+			else if(sbjGrade < 80 && sbjGrade>=70)
+				map.put("grdlevel", R.drawable.grade3_ic);
+			else if(sbjGrade < 70 && sbjGrade>=60)
+				map.put("grdlevel", R.drawable.grade2_ic);
+			else if(sbjGrade < 60)
+				map.put("grdlevel", R.drawable.grade1_ic);
 			list.add(map);
 		}
 

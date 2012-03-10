@@ -22,8 +22,8 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dip"
-        android:background="@drawable/loginenter" 
         android:onClick="onEnterClicked"
+        android:background="@drawable/enter_ic"
        />
    
     <Button

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/entering_bkg">
 
     <LinearLayout
         android:id="@+id/empty1"
@@ -16,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="30dp" >
+            android:textSize="30sp" >
         </TextView >
     </LinearLayout>
 
