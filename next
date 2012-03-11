@@ -1,6 +1,4 @@
-0.add options menu and an about dialo
-1.make the UI looks good
-2.make some activity animation
-3.after finish things above consider to add a total ranking list
+next edition
+1.save password use sharedpreferences
+2.activity task manage
 
-do  later  figure how to get the add-up score of each one from the server
