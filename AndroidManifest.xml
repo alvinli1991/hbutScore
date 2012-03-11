@@ -19,30 +19,38 @@
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".EnteringActivity" >
+        <activity android:name=".EnteringActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".ShowActivity" >
+        <activity android:name=".ShowActivity" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".UpdateActivity"
-            android:theme="@style/transparent" >
+            android:theme="@style/transparent" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ClassShowActivity" >
+        <activity android:name=".ClassShowActivity"
+android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".AboutActivity"
-            android:theme="@style/transparent" >
+            android:theme="@style/transparent" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".NotificationActivity" >
+        <activity android:name=".NotificationActivity" 
+            android:screenOrientation="portrait">
         </activity>
 
         <service android:name=".ClsService" >

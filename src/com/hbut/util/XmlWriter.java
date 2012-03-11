@@ -12,7 +12,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.util.Log;
 
