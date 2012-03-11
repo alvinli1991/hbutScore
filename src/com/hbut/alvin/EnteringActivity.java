@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +28,6 @@ public class EnteringActivity extends DownLoadActivity {
 
 	PersonInf pi;
 	TextView processState;
-	ImageView flowImg;
 	ProgressBar progressBar;
 	Handler handler;
 	ArrayList<PersonSbj> psSbjList = null;
@@ -55,7 +53,6 @@ public class EnteringActivity extends DownLoadActivity {
 		myApp = (HbutApp) getApplicationContext();
 		pi = myApp.getPsi();
 		processState = (TextView) findViewById(R.id.prcsState);
-		flowImg = (ImageView) findViewById(R.id.flowImg);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		progressBar.setMax(90);
 		Bundle myBundle = getIntent().getExtras();

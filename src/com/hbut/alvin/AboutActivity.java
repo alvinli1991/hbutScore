@@ -1,21 +1,33 @@
 package com.hbut.alvin;
 
-
 import android.app.ListActivity;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
 public class AboutActivity extends ListActivity {
 
-	String[] about = { "程序猿:AlvinLi", "email:lxlx1991@gmail.com", "设计猿:YuKi",
-			"email:2010yujin@gmail.com" };
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
-		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,about));
+		try {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.about);
+
+			PackageManager pm = getPackageManager();
+			PackageInfo pi = pm.getPackageInfo("com.hbut.alvin", 0);
+			String version = "Version:"+ pi.versionName;
+			String[] about = {version,"程序猿:AlvinLi", "lxlx1991@gmail.com",
+					"设计猿:YuKi", "2010yujin@gmail.com" };
+			setListAdapter(new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, about));
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

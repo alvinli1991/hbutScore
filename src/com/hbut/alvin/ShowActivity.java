@@ -49,6 +49,8 @@ public class ShowActivity extends ListActivity {
 		// TODO Auto-generated method stub
 		menu.add(Menu.NONE,MENU_ABOUT,Menu.NONE,"¹ØÓÚ")
 		.setIcon(R.drawable.about_ic);
+		 
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 

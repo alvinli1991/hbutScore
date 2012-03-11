@@ -73,6 +73,7 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 	final static int PERMISSIONNO = 6;
 	final static int PERMISSIONCHECK=7;
 	final static int PERMISSIONYES = 8;
+	final static int CHECKNOTIFY = 9;
 	HbutApp myApp;
 	boolean hasPiFile = false;
 	Handler handler;
@@ -137,8 +138,6 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 				switch (msg.what) {
 				case CHECK:
 					myApp.setClsDownloadEnd(false);
-					Toast.makeText(LoginActivity.this, "验证信息...",
-							Toast.LENGTH_SHORT).show();
 					if (pi == null) {
 						Toast.makeText(LoginActivity.this, "帐号,密码错误!",
 								Toast.LENGTH_SHORT).show();
@@ -203,6 +202,10 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 					enterContent.setClickable(true);
 					bkgBtn.setClickable(true);
 					break;
+				case CHECKNOTIFY:
+					Toast.makeText(LoginActivity.this, "验证中……",
+							Toast.LENGTH_LONG).show();
+					break;
 					
 				}
 
@@ -213,6 +216,7 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 	}
 
 	public void onEnterClicked(View enterBtn) {
+		handler.sendMessage(handler.obtainMessage(CHECKNOTIFY));
 		id = idFld.getText().toString();
 		if (id == null || id.equals("")) {
 			Toast.makeText(LoginActivity.this, "学号不能为空!!!", Toast.LENGTH_SHORT)

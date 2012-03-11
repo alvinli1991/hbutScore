@@ -3,7 +3,7 @@
 
     <string name="hello">Hello World, HbutScoreActivity!</string>
     <string name="app_name">HbutScore</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">欢迎使用</string>
     <string name="id">学号</string>
     <string name="pwd">密码</string>
     <string name="enter">登录</string>
@@ -23,5 +23,10 @@
     <string name="aboutBkg">about information</string>
     <string name="bkgBtn">fake background</string>
     <string name="permission">permission</string>
+    <string name="grade1">为神马挂的是我?!</string>
+    <string name="grade2">60分万岁！</string>
+    <string name="grade3">可以做得更好……</string>
+    <string name="grade4">离卓越一步之遥！</string>
+    <string name="grade5">霸气外露的V5传奇！</string>
 
 </resources>

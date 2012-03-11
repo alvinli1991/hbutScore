@@ -9,8 +9,9 @@
     <LinearLayout
         android:id="@+id/empty1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_height="0dip"
+        android:layout_weight="15" 
+        android:gravity="center">
 
         <TextView
             android:id="@+id/prcsState"
@@ -20,36 +21,142 @@
             android:textSize="30sp" >
         </TextView >
     </LinearLayout>
-
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/empty2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:gravity="center" >
+        android:layout_height="0dip"
+        android:layout_weight="70" >
 
-        <ImageView 
-            android:id="@+id/flowImg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/flowImg"
-            >"
-            
-        </ImageView>>
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="20dip"
+            android:src="@drawable/grade1_ic" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView1"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="15dip"
+            android:src="@drawable/grade2_ic" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="15dip"
+            android:src="@drawable/grade3_ic" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView3"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="15dip"
+            android:src="@drawable/grade4_ic" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView4"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="15dip"
+            android:src="@drawable/grade5_ic" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_toRightOf="@+id/imageView4"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="14dip"
+            android:text="@string/grade4"
+            android:textColor="#f0000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageView5"
+            android:layout_alignTop="@+id/imageView5"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="14dip"
+            android:text="@string/grade5"
+            android:textColor="#f0000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageView3"
+            android:layout_alignTop="@+id/imageView3"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="14dip"
+            android:text="@string/grade3"
+            android:textColor="#f0000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView2"
+            android:layout_toRightOf="@+id/imageView2"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="14dip"
+            android:text="@string/grade2"
+            android:textColor="#f0000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_toRightOf="@+id/imageView1"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="14dip"
+            android:text="@string/grade1"
+            android:textColor="#f0000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/empty3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" 
+        android:layout_height="0dip"
+        android:layout_weight="15" 
         android:gravity="center_vertical">
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="36dp" 
+            android:layout_height="36dip" 
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip">
         </ProgressBar>

@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/cshow_bkg">
+    android:background="@drawable/cshow_bkg"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,23 +16,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:padding="10dip"
-            android:contentDescription="@string/backBtn"
-            android:onClick="onBackCliked" 
             android:background="#00000000"
-            android:src="@drawable/back_glow_ic"/>
+            android:contentDescription="@string/backBtn"
+            android:onClick="onBackCliked"
+            android:padding="10dip"
+            android:src="@drawable/back_glow_ic" />
 
         <TextView
             android:id="@+id/clsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignBottom="@+id/backBtn"
+            android:layout_alignTop="@+id/backBtn"
+            android:layout_marginRight="3dip"
+            android:layout_toRightOf="@+id/backBtn"
             android:ellipsize="marquee"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:singleLine="true"
-            android:textSize="25sp"
-            android:text="@string/cls" 
-            android:textColor="#ffffffff"/>
+            android:textColor="#ffffffff"
+            android:textSize="25sp" />
     </RelativeLayout>
 
     <LinearLayout
