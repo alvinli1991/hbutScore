@@ -15,6 +15,11 @@ import android.util.Log;
 
 public class XmlReader {
 
+	/*
+	 * parse a student's information from the HTML stream downloaded and 
+	 * store it in a XML file
+	 * @param inStream the HTML stream contains student's information
+	 * */
 	public static PersonInf pIXmlParser(InputStream inStream) {
 		PersonInf pi = null;
 		boolean isEnd = false;
@@ -74,7 +79,11 @@ public class XmlReader {
 
 	}
 
-	// parser xml data
+	/*
+	 * parser individual grades from the HTML stream downloaded and store 
+	 * it in a XML file
+	 * @param inStream the HTML stream contains individual grades
+	 * */ 
 	public static PersonCombine pGradeXmlParser(InputStream inStream) {
 		// store person inf and person subjects inf
 		PersonCombine pc = null;
@@ -161,6 +170,12 @@ public class XmlReader {
 
 	}
 
+	
+	/*
+	 * parser class grades from the HTML stream downloaded and store 
+	 * it in a XML file
+	 * @param inStream the HTML stream contains class grades
+	 * */ 
 	public static Map<String, List<ClsStuSbj>> cGradeXmlParser(
 			InputStream inStream) {
 		String key = null;
@@ -221,6 +236,12 @@ public class XmlReader {
 
 	}
 
+	
+	/*
+	 * parser version from the xml stream downloaded and store 
+	 * it in a XML file
+	 * @param inStream the xml stream contains version information
+	 * */ 
 	public static VersionInf paserVersionXml(InputStream inStream) {
 		VersionInf vi = null;
 		XmlPullParserFactory pullFactory;

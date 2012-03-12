@@ -10,6 +10,11 @@ import android.util.Log;
 
 public class HtmlParser {
 
+	/*
+	 * get the course number from the html doc download
+	 * 
+	 * @param coutDoc html doc contains the number
+	 * */
 	public static int parserSbjCount(String countDoc){
 		Pattern p =Pattern.compile("target=\"FmRight\">\\d+</A>");
 		Matcher m = p.matcher(countDoc);
@@ -19,6 +24,14 @@ public class HtmlParser {
 		Log.v("count", Integer.toString(count));
 		return count;
 	}
+	/*
+	 * parse the grades of a class from the html doc using regex
+	 * then store them in the Map data structure ,
+	 * the first param is the course id,the second param is the grades of 
+	 * the students who has chosen this course
+	 * 
+	 * @param clsDoc html doc contains the grades of the whole class
+	 * */
 	public static Map<String, List<ClsStuSbj>> parserClsSbj(String clsDoc) {
 		Map<String, List<ClsStuSbj>> clsSbjMap = new HashMap<String, List<ClsStuSbj>>();
 		String oldKey = "";
@@ -87,6 +100,9 @@ public class HtmlParser {
 		return pi;
 	}
 
+	/*
+	 * get the individual grades of the specific student 
+	 * */
 	public static ArrayList<PersonSbj> parserPsSbj(String pSbjDoc) {
 		ArrayList<PersonSbj> pSbjList = new ArrayList<PersonSbj>();
 		PersonSbj pSbj = new PersonSbj();

@@ -17,6 +17,9 @@ import android.util.Log;
 
 public class XmlWriter {
 
+	/*
+	 * check if the SD card is available
+	 * */
 	public static boolean hasPath() {
 		if (Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState()))
@@ -25,6 +28,14 @@ public class XmlWriter {
 			return false;
 	}
 
+	/*
+	 * Create a  XML file with yes permission and the first date of this year
+	 * when user open the APP the first time .
+	 * this process can give  user  access to the app's functionality
+	 * and generate the first permission check after finishing downloading 
+	 * the class grades.
+	 * @param versionID the version of this app
+	 * */
 	public static String writeFirstVersionXml(String versionID) {
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
@@ -63,15 +74,9 @@ public class XmlWriter {
 			xmlSerializer.startTag(nmsp, XmlTag.day);
 			xmlSerializer.text(Integer.toString(day));
 			xmlSerializer.endTag(nmsp, XmlTag.day);
-//			// <note>
-//			xmlSerializer.startTag(nmsp, XmlTag.note);
-//			//<element></element>
-//			element
-//			//</note>
-//			xmlSerializer.endTag(nmsp, XmlTag.note);
 			// </app>
 			xmlSerializer.endTag(nmsp, XmlTag.app);
-			// <>
+			//<>
 			xmlSerializer.endDocument();
 			return xmlWriter.toString();
 		} catch (Exception e) {
@@ -80,6 +85,13 @@ public class XmlWriter {
 		}
 	}
 
+	/*
+	 * create a XML file after downloading new version.xml file from server
+	 * @param versionID the version of the APP
+	 * @param element the information download from update server
+	 * @param allow the permission download from update server
+	 * */
+	
 	public static String writeVersionXml(String versionID, String[] element,
 			String allow) {
 		Calendar c = Calendar.getInstance();
@@ -142,6 +154,12 @@ public class XmlWriter {
 
 	}
 
+	/*
+	 * 
+	 * Create a xml containing a particular student's grades 
+	 * @param pList the list contains a student's whole course's grade
+	 * @param pi the student's information
+	 * */
 	public static String writePGradeXml(List<PersonSbj> pList, PersonInf pi) {
 
 		StringWriter xmlWriter = new StringWriter();
@@ -189,14 +207,6 @@ public class XmlWriter {
 				xmlSerializer.startTag(nmsp, XmlTag.times);
 				xmlSerializer.text(Integer.toString(n.getSbjTimes()));
 				xmlSerializer.endTag(nmsp, XmlTag.times);
-				// <level></level>
-				// xmlSerializer.startTag(nmsp, XmlTag.eSubLevel);
-				// if (n.getSbjLevel() != null)
-				// xmlSerializer.text(n.getSbjLevel());
-				// else
-				// xmlSerializer.text("");
-				// xmlSerializer.endTag(nmsp, XmlTag.eSubLevel);
-				// </subject>
 				xmlSerializer.endTag(nmsp, XmlTag.sbj);
 			}
 			xmlSerializer.endTag(nmsp, XmlTag.stu);
@@ -210,6 +220,12 @@ public class XmlWriter {
 
 	}
 
+	/*
+	 * create a xml containing all grades information of his class
+	 * 
+	 * @param clsMap string is the id of a course ,list contains the student and his grade
+	 * @param clsId the id of the class
+	 * */
 	public static String writeCGradeXml(Map<String, List<ClsStuSbj>> clsMap,
 			String clsId) {
 		StringWriter xmlWriter = new StringWriter();
