@@ -44,6 +44,10 @@ import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
+/*
+ * a service used to download class grades file ,parse it and 
+ * store it in local SD card 
+ * */
 public class ClsService extends Service {
 
 	private Looper mServiceLooper;

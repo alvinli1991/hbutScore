@@ -1,4 +1,7 @@
 next edition
 1.save password use sharedpreferences
 2.activity task manage
-3.calculate credit point
+3.calculate credit point and decide how to show it
+4.fix an update bug
+5.change the grades show UI ,maybe including changing the grades data format saved in xml
+6.optimize the layout attributes and rearrange it into some xml file

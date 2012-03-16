@@ -46,6 +46,10 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 
+/*
+ * a service used to check the version information of 
+ * the app from update server,and compare local version with this
+ * */
 public class VersionCheckService extends Service {
 
 	private Looper mServiceLooper;
@@ -189,12 +193,8 @@ public class VersionCheckService extends Service {
 					outStreamWriter.close();
 					outStream.close();
 					// compare
-					if (!appVerison.equalsIgnoreCase(remoteVi.getVersion())) {
-						// notify user
-						//newVi.setVersion(remoteVi.getVersion());
-						
+					if (!appVerison.equalsIgnoreCase(remoteVi.getVersion())) {	
 						newVi = remoteVi;
-						//newVi.setElement(remoteVi.getElement());
 						mServiceHandler.sendMessage(mServiceHandler
 								.obtainMessage(NOTIFY));
 						return;
@@ -203,7 +203,6 @@ public class VersionCheckService extends Service {
 					mServiceHandler.sendMessage(mServiceHandler
 							.obtainMessage(END));
 				} catch (FileNotFoundException e) {
-					// TODO: handle exception
 					e.printStackTrace();
 					mServiceHandler.sendMessage(mServiceHandler
 							.obtainMessage(END));
@@ -229,13 +228,11 @@ public class VersionCheckService extends Service {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// TODO Auto-generated method stub
 		StartMsg = mServiceHandler.obtainMessage();
 		StartMsg.arg1 = startId;
 		Log.v("serviceID", Integer.toString(startId));
@@ -244,7 +241,6 @@ public class VersionCheckService extends Service {
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

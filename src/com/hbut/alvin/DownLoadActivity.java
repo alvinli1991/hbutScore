@@ -23,8 +23,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+/*
+ * the father activity of all activities which have the 
+ * download requirement
+ * */
 public class DownLoadActivity extends Activity {
 
+	/*
+	 * check if Internet is available
+	 * */
 	public boolean hasNetWork(){
 		ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo net = conMgr.getActiveNetworkInfo();
@@ -34,6 +41,10 @@ public class DownLoadActivity extends Activity {
 			return true;
 	}
 	
+	/*
+	 * download the file contains the number of  courses that all your classmates choose
+	 * @param id student id
+	 * */
 	public String getSbjCountFileByID(String id){
 		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 4000);
@@ -76,6 +87,11 @@ public class DownLoadActivity extends Activity {
 			httpClient.getConnectionManager().shutdown();
 		}
 	}
+	
+	/*
+	 * download the file contains personal information 
+	 * @param id student id
+	 * */
 	public String getPsInfoFileByID(String ID) {
 
 		HttpParams httpParams = new BasicHttpParams();
@@ -122,6 +138,10 @@ public class DownLoadActivity extends Activity {
 
 	}
 
+	/*
+	 * download the file contains individual grades 
+	 * @param id student id
+	 * */
 	public String getOwnGradeFileByID(String ID) {
 
 		HttpParams httpParams = new BasicHttpParams();
@@ -167,6 +187,10 @@ public class DownLoadActivity extends Activity {
 
 	}
 
+	/*
+	 * download the file contains class grades 
+	 * @param clsName classname
+	 * */	
 	public String getClsGradeFileByName(String clsName) {
 
 		HttpParams httpParams = new BasicHttpParams();
