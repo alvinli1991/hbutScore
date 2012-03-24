@@ -66,10 +66,16 @@ public class WelcomeActivity extends Activity {
 						inputStream = openFileInput("version.xml");
 						VersionInf localVi = XmlReader
 								.paserVersionXml(inputStream);
-						if (localVi.getAllow().equalsIgnoreCase("true"))
-							allowState = "true";
-						else
+						if (localVi.getAllow().equalsIgnoreCase("false"))// pi.versionName.compareToIgnoreCase(localVi.getVersion())>0||
 							allowState = "false";
+						else {//equalsIgnoreCase(localVi.getVersion()
+							if (pi.versionName.compareToIgnoreCase(localVi
+									.getVersion())>=0)
+								allowState = "true";
+							else
+								allowState = "false";
+						}
+
 					}
 
 				} catch (FileNotFoundException e) {

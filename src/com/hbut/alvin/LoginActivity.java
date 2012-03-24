@@ -31,6 +31,9 @@ import com.hbut.alvin.R;
 import com.hbut.httpDownload.URIContainer;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -47,7 +50,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class LoginActivity extends DownLoadActivity implements OnTouchListener {
-
+	
+	PackageManager pm ;
+	PackageInfo pkgi;
+	//
 	VersionInf remoteVi;
 	PersonInf pi;
 	String pwd;
@@ -87,6 +93,14 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
+		pm = getPackageManager();
+		try {
+			pkgi = pm.getPackageInfo("com.hbut.alvin", 0);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Intent allowIntent = getIntent();
 		allow = allowIntent.getStringExtra("allow");
 
@@ -311,6 +325,7 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 				// TODO Auto-generated method stub
 				super.run();
 				try {
+
 					handler.sendMessage(handler.obtainMessage(PERMISSIONCHECK));
 					// download
 					String versionFile = getVersionFile();
@@ -337,11 +352,15 @@ public class LoginActivity extends DownLoadActivity implements OnTouchListener {
 					// TODO: handle exception
 					e.printStackTrace();
 				} finally {
-					if (remoteVi.getAllow().equalsIgnoreCase("true")) {
-						handler.sendMessage(handler.obtainMessage(PERMISSIONYES));
-
-					}else{
+					if(remoteVi.getAllow().equalsIgnoreCase("false")){
 						handler.sendMessage(handler.obtainMessage(PERMISSIONNO));
+					}
+					else{
+						if(pkgi.versionName.compareToIgnoreCase(remoteVi.getVersion())>=0)//pi.versionName.compareToIgnoreCase(localVi.getVersion())>=0
+							
+							handler.sendMessage(handler.obtainMessage(PERMISSIONYES));
+						else
+							handler.sendMessage(handler.obtainMessage(PERMISSIONNO));
 					}
 
 				}

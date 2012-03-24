@@ -61,7 +61,7 @@ public class VersionCheckService extends Service {
 	VersionInf newVi;
 	Notification notification;
 	NotificationManager mnofityMgr;
-	HbutApp myapp ;
+	HbutApp myapp;
 	final static int UPDATE_ID = 1;
 	final static int END = 0;
 	final static int NOTIFY = 1;
@@ -107,7 +107,7 @@ public class VersionCheckService extends Service {
 		// attach note and version
 		notificationIntent.putExtra("version", newVi.getVersion());
 		myapp.setAppvi(newVi);
-		//notificationIntent.putExtra("note", newVi.getElement());	
+		// notificationIntent.putExtra("note", newVi.getElement());
 		//
 		PendingIntent contentIntent = PendingIntent.getActivity(
 				VersionCheckService.this, 0, notificationIntent, 0);
@@ -146,13 +146,14 @@ public class VersionCheckService extends Service {
 						InputStream inputStream;
 						inputStream = openFileInput("version.xml");
 						localVi = XmlReader.paserVersionXml(inputStream);
-
-						if (!localVi.getVersion()
-								.equalsIgnoreCase(appVerison)) {
+						// if (!localVi.getVersion()
+						// .equalsIgnoreCase(appVerison))
+						if (appVerison
+								.compareToIgnoreCase(localVi.getVersion()) < 0) {
 							// notify user
-							//newVi.setVersion(localVi.getVersion());
-							newVi=localVi;
-							//newVi.setElement(localVi.getElement());
+							// newVi.setVersion(localVi.getVersion());
+							newVi = localVi;
+							// newVi.setElement(localVi.getElement());
 							mServiceHandler.sendMessage(mServiceHandler
 									.obtainMessage(NOTIFY));
 							return;
@@ -165,7 +166,7 @@ public class VersionCheckService extends Service {
 								localVi.getDay());
 						int oldDays = fileDate.get(Calendar.DAY_OF_YEAR);
 						if (localVi.getYear() == now.get(Calendar.YEAR)
-								&& (nowDays - oldDays) < 2) {
+								&& (nowDays - oldDays) < 1) {
 							mServiceHandler.sendMessage(mServiceHandler
 									.obtainMessage(END));
 							return;
@@ -192,8 +193,7 @@ public class VersionCheckService extends Service {
 					outStreamWriter.write(newVersionXml);
 					outStreamWriter.close();
 					outStream.close();
-					// compare
-					if (!appVerison.equalsIgnoreCase(remoteVi.getVersion())) {	
+					if (appVerison.compareToIgnoreCase(remoteVi.getVersion())<0) {
 						newVi = remoteVi;
 						mServiceHandler.sendMessage(mServiceHandler
 								.obtainMessage(NOTIFY));
